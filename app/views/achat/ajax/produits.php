@@ -18,7 +18,6 @@ $controller = new \App\Core\Controller();
                         <thead>
                             <th data-field="name">Designation</th>
                             <th data-field="family">Famille</th>
-                            <th data-field="prix">Prix unitaire</th>
                             <th data-field="stock">Stock</th>
                             <th data-field="actions"></th>
                         </thead>
@@ -29,7 +28,6 @@ $controller = new \App\Core\Controller();
                             <tr>
                                 <td><?php echo ucfirst($produit->prodesignation) ?></td>
                                 <td><?php echo $produit->famille; ?></td>
-                                <td><span style="font-style: italic; font-size: 14px;"><?php echo $produit->proprixUnitAchat; ?></span></td>
                                 <td>
                                     <?php if ($controller->stock_magasin_by_produit($produit->proid) == 0) : ?>
                                         <span style="font-style: italic; font-size: 12px;"><?php echo 'rupture' ?></span>

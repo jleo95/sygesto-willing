@@ -21,7 +21,6 @@
                             <thead>
                             <th>Designation</th>
                             <th>Famille</th>
-                            <th>Prix unitaire</th>
                             <th>Quantité</th>
                             <th></th>
                             </thead>
@@ -32,7 +31,6 @@
                                     <tr id="<?php echo 'line' . $detail['idProduit'] ?>">
                                         <td><?php echo $detail['produit'] ?></td>
                                         <td><?php echo $detail['famille'] ?></td>
-                                        <td><?php echo $detail['prix'] ?></td>
                                         <td><?php echo $detail['quantite'] ?></td>
                                         <td><a href="javascript: removeProduitOffre(<?php echo $detail['idProduit'] ?>)"><i class="fa fa-remove" style="color: #EE0000;"></i></a></td>
                                     </tr>

@@ -55,26 +55,26 @@ class AchatController extends Controller
             if ($i == count($offre_detail) - 1) {
                 $html       .= '<div class="produit end">' .
                                 '<div class="name"><span class="label">Produit: </span>' . $detail->prodesignation . '</div>' .
-                                '<div class="prix"><span class="label">Prix unitaire: </span>' . $detail->proprixUnitVente . '</div>' .
+//                                '<div class="prix"><span class="label">Prix unitaire: </span>' . $detail->proprixUnitVente . '</div>' .
                                 '<div class="quantite"><span class="label">Quantité: </span>' . $detail->quantite . '</div>' .
-                                '<div class="quantite"><span class="label">Prix total: </span> <span style="font-style: italic;">' . $detail->proprixUnitVente * $detail->quantite . '</span></div>' .
+//                                '<div class="quantite"><span class="label">Prix total: </span> <span style="font-style: italic;">' . $detail->proprixUnitVente * $detail->quantite . '</span></div>' .
                                 '</div>';
             }else {
                 $html       .= '<div class="produit">' .
                                 '<div class="name"><span class="label">Produit: </span>' . $detail->prodesignation . '</div>' .
-                                '<div class="prix"><span class="label">Prix unitaire: </span>' . $detail->proprixUnitVente . '</div>' .
+//                                '<div class="prix"><span class="label">Prix unitaire: </span>' . $detail->proprixUnitVente . '</div>' .
                                 '<div class="quantite"><span class="label">Quantité: </span>' . $detail->quantite . '</div>' .
-                                '<div class="quantite"><span class="label">Prix total: </span> <span style="font-style: italic;">' . $detail->proprixUnitVente * $detail->quantite . '</span></div>' .
+//                                '<div class="quantite"><span class="label">Prix total: </span> <span style="font-style: italic;">' . $detail->proprixUnitVente * $detail->quantite . '</span></div>' .
                                 '</div>';
             }
             $i ++;
 
 
-            $prixTotal += $detail->proprixUnitVente * $detail->quantite;
+//            $prixTotal += $detail->proprixUnitVente * $detail->quantite;
         }
 
         $html .= '</di>';
-        $html .= '<div class="prixTatal"><span class="label">Prix totaux: </span><span class="value">' . number_format($prixTotal, 2, ',', ' ') . ' fcfa</span></div>';
+//        $html .= '<div class="prixTatal"><span class="label">Prix totaux: </span><span class="value">' . number_format($prixTotal, 2, ',', ' ') . ' fcfa</span></div>';
         echo json_encode([
             'bodyModal' => $html,
             'headerModal' => 'Commande (' . $offre->offid . ')'
@@ -95,11 +95,11 @@ class AchatController extends Controller
                 }else {
                     $error ['fournisseurOffre'] = true;
                 }
-                if (isset($this->input->dateOffre) AND !empty($this->input->dateOffre)) {
-                    $data ['offdate'] = $this->input->dateOffre;
-                }else {
-                    $error ['dateOffre'] = true;
-                }
+//                if (isset($this->input->dateOffre) AND !empty($this->input->dateOffre)) {
+//                    $data ['offdate'] = $this->input->dateOffre;
+//                }else {
+//                    $error ['dateOffre'] = true;
+//                }
 
                 if (isset($this->input->dateLivraisonOffre) AND !empty($this->input->dateLivraisonOffre)) {
                     $data ['offdateLivraison'] = $this->input->dateLivraisonOffre;
@@ -124,12 +124,13 @@ class AchatController extends Controller
                 $offre['offrealiserpar'] = $this->session->stkiduser;
                 $offre['offpaiement'] = $this->input->modePayement;
 
+
                 if ($this->Offre->insert($offre)) {
                     $lastId = $this->Offre->lastInsert();
 
                     foreach ($this->session->offre_detail_db as $detail) {
                         $detail ['offre'] = $lastId;
-                        $detail['date'] = date('Y-m-d H:i:s', time());
+//                        $detail['date'] = date('Y-m-d H:i:s', time());
                         $this->Offredetail->insert($detail);
                     }
                 }
@@ -199,14 +200,14 @@ class AchatController extends Controller
           'idProduit' => $produit->proid,
           'produit' => ucfirst($produit->prodesignation),
           'famille' => ucfirst($this->Famille->get_by('famid', $produit->profamille)->famlibelle),
-          'prix' => $produit->proprixUnitAchat,
+//          'prix' => $produit->proprixUnitAchat,
           'quantite' => $this->input->quantite
         ];
 
         $html    = '<tr>';
         $html   .= '<td>' . ucfirst($produit->prodesignation) . '</td>' .
                    '<td>' . ucfirst($this->Famille->get_by('famid', $produit->profamille)->famlibelle) . '</td>' .
-                   '<td>' . $produit->proprixUnitAchat . '</td>' .
+//                   '<td>' . $produit->proprixUnitAchat . '</td>' .
                    '<td>' . $this->input->quantite . '</td>' .
                    '<td>' .
                    '<a href="javascript: removeProduitOffre(' . $produit->proid . ')"><i class="fa fa-remove" style="color: #EE0000;"></i></a>' .

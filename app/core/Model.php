@@ -185,6 +185,7 @@ class Model
         $value = implode($value, ', ');
         $occ = implode($occ, ',');
         $req = 'INSERT INTO ' . $this->table . ' (' . $value . ') VALUES (' . $occ . ')';
+
         return $this->execute($req, $args, false);
     }
     
