@@ -1,0 +1,7 @@
+Table Produit :
+On deplace les colonnes datePeremption, prixAchat vers la table commande detail
+
+Tabale Commande :
+on ajoute les colonnes datePeremption, prixAchat, code QR
+
+Table Commande detail :

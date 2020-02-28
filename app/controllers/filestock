@@ -1,0 +1,24 @@
+$stock = $this->stock_boutique_by_produit($produit->proid);
+            if ($this->stock_boutique_by_produit($produit->proid) > $produit->proseuilalert) {
+                $etat = '<span class="text-success" style="font-size: 12.5px;">disponible</span>';
+            }elseif ($this->stock_boutique_by_produit($produit->proid) > 0 && $this->stock_boutique_by_produit($produit->proid) <= $produit->proseuilalert) {
+                $etat = '<span class="text-warning" style="font-size: 12.5px;">en alert</span>';
+            }else {
+                $stock = '<span style="font-style: italic; font-size: 13px;">/</span>';
+                $etat = '<span class="text-danger" style="font-size: 12.5px;">en rupture</span>';
+            }
+            $quantite = 0;
+            if (intval($this->stock_boutique_by_produit($produit->proid)) * 1 !== 0) {
+                $quantite = (intval($this->stock_boutique_by_produit($produit->proid)) * 1) * $produit->proprixUnitVente;
+            }
+//            $quantite = number_format($quantite, 2, ',', ' ');
+            $html .= '<tr>' .
+                        '<td>' . $produit->proid . '</td>' .
+                        '<td>' . ucfirst($produit->prodesignation) . '</td>' .
+                        '<td>' . $produit->famille . '</td>' .
+                        '<td>' . $stock . '</td>' .
+                        '<td>' . $quantite . '</td>' .
+                        '<td>' . $etat . '</td>' .
+                     '</tr>';
+
+            $prixtotaux += $this->stock_boutique_by_produit($produit->proid) * $produit->proprixUnitVente;

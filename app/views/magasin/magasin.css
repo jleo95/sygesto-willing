@@ -1,0 +1,30 @@
+.produit {}
+.produit div {
+    font-size: 15px;
+    padding: 3px;
+}
+.produit div {}
+.produit div input {
+    height: 32px;
+    width: 110px;
+    display: inline-block;
+}
+.label {
+    color: #666;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+.abtn {
+    padding: 3px 5px;
+}
+
+.toolbar-table {
+    padding: 5px;
+    margin: 15px auto;
+}
+.views {
+    padding-top: 15px;
+}
+.title-view {
+    display: none;
+}

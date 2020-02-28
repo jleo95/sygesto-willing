@@ -1,0 +1,2 @@
+RewriteEngine on
+RewriteRule (.*) assets/$1 [L]

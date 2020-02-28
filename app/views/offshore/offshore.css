@@ -1,0 +1,16 @@
+.produit {
+    text-align: justify-all;
+}
+.produit div {
+    text-align: justify;
+    padding: 5px;
+}
+.label {
+    text-transform: uppercase;
+    color: #666;
+    font-size: 13px;
+}
+
+.value {
+    font-size: 14px;
+}
