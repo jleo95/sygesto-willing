@@ -130,13 +130,4 @@ class Controller
         }
     }
 
-    public function stock_magasin_by_produit($idproduit) {
-        return $this->Offredetail->stock($idproduit) - $this->Mouvement->quanite_sortie_by_produit($idproduit);
-    }
-    
-    public function stock_boutique_by_produit($idproduit) {
-//        echo $this->Commandedetail->stock($idproduit) . '<br>';
-        return ($this->Mouvement->quanite_sortie_by_produit($idproduit) * 1) - ($this->Commandedetail->stock($idproduit) * 1);
-    }
-
 }

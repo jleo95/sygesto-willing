@@ -30,73 +30,6 @@ class ProduitController extends Controller
 
     public function index()
     {
-//        if ($_POST) {
-//            $data = [];
-//            $error = [];
-//
-//            if (isset($this->input->designAddProduit) AND !empty($this->input->designAddProduit)) {
-//                $data ['prodesignation'] = $this->input->designAddProduit;
-//            }else {
-//                $error ['danger']['designation'] = true;
-//            }
-//
-//            if (isset($this->input->prixachatAddProduit) AND !empty($this->input->prixachatAddProduit)) {
-//                $data ['proprixUnitAchat'] = $this->input->prixachatAddProduit;
-//            }else {
-//                $error ['danger']['prixUnitAchat'] = true;
-//            }
-//
-//            if (isset($this->input->prixGlobVenteAddProduit) AND !empty($this->input->prixGlobVenteAddProduit)) {
-//                $data ['proprixblogVente'] = $this->input->prixGlobVenteAddProduit;
-//            }else {
-//                $error ['danger']['prixGlobalVente'] = true;
-//            }
-//
-//            if (isset($this->input->nbblogAddProduit) AND !empty($this->input->nbblogAddProduit)) {
-//                $data ['pronbproduitBlog'] = $this->input->nbblogAddProduit;
-//            }
-//
-//            if (isset($this->input->prixUnitVenteAddProduit) AND !empty($this->input->prixUnitVenteAddProduit)) {
-//                $data ['proprixUnitVente'] = $this->input->prixUnitVenteAddProduit;
-//            }else {
-//                $error ['danger']['prixUnitVente'] = true;
-//            }
-//
-//            if (isset($this->input->peremptionAddProduit) AND !empty($this->input->peremptionAddProduit)) {
-//                $data ['prodatePeremption'] = $this->input->peremptionAddProduit;
-//            }else {
-//                $error ['danger']['peremption'] = true;
-//            }
-//
-//            if (isset($this->input->familleAddProduit) AND !empty($this->input->familleAddProduit)) {
-//                $data ['profamille'] = $this->input->familleAddProduit;
-//            }
-//
-//            if (isset($this->input->uniteAddProduit) AND !empty($this->input->uniteAddProduit)) {
-//                if ($this->input->uniteAddProduit != 'aucun') {
-//                    $data ['prounitemessure'] = $this->input->uniteAddProduit;
-//                }
-//
-//            }else {
-//                $error ['danger']['unitemesure'] = true;
-//            }
-//
-//            if (isset($this->input->fournisseurAddProduit) AND !empty($this->input->fournisseurAddProduit)) {
-//                $data ['profournisseur'] = $this->input->fournisseurAddProduit;
-//            }
-//
-//            if (isset($this->input->seuilAddProduit) AND !empty($this->input->seuilAddProduit)) {
-//                $data ['proseuilalert'] = $this->input->seuilAddProduit;
-//            }
-//            if (empty($error)) {
-//                $this->Produit->insert($data);
-//                $this->layout->assign('success', true);
-////                die('cool');
-//            }else {
-//                var_dump($error);
-//                die('il ya une erreur');
-//            }
-//        }
         $this->layout->setTitle('Produits');
         $this->layout->setTitle('Liste des produits', 'v');
         $this->layout->assign('produits', $this->Produit->all([], 'proid DESC'));
@@ -385,53 +318,7 @@ class ProduitController extends Controller
     {
         $html = '';
         $produit = $this->Produit->get_by('proid', $this->input->idProduit);
-        $stock_boutique = '';
-        $stock_magasin = '';
         $header_stock = '<span style="color: #008000; font-size: 15px; font-weight: bold;"> (Disponible)</span>';
-
-//        if ($this->stock_boutique_by_produit($produit->proid) == 0) {
-//            $stock_boutique = '<span class="value" style="font-style: italic; color: #d9534f;">en rupture</span>';
-//            $header_stock = '<span style="color: #d9534f; font-size: 15px; font-weight: bold;">(En rupture)</span>';
-//        }elseif ($this->stock_boutique_by_produit($produit->proid) <= $produit-> proseuilalert) {
-//            $stock_boutique = '<span class="value" style="font-style: italic; color: #f0ad4e;">alert (' . $this->stock_boutique_by_produit($produit->proid) . ')</span>';
-//            $header_stock = '<span style="color: #f0ad4e; font-size: 15px; font-weight: bold;">(En alerte (Disponible))</span>';
-//        }else {
-//            $stock_boutique = '<span class="value" style="font-style: italic;">' . $this->stock_boutique_by_produit($produit->proid) . '</span>';
-//        }
-
-//        if ($this->stock_magasin_by_produit($produit->proid) == 0) {
-//            $stock_magasin = '<span class="value" style="font-style: italic; color: #d9534f;">en rupture</span>';
-//        }elseif ($this->stock_magasin_by_produit($produit->proid) <= $produit-> proseuilalert) {
-//            $stock_magasin = '<span class="value" style="font-style: italic; color: #f0ad4e;">alert (' . $this->stock_magasin_by_produit($produit->proid) . ')</span>';
-//        }else {
-//            $stock_magasin = '<span class="value" style="font-style: italic;">' . $this->stock_magasin_by_produit($produit->proid) . '</span>';
-//        }
-
-        $date = '';
-
-//        $date = $produit->prodatePeremption;
-//        $days = calculDate($date);
-//        $dateperemption = $produit->prodatePeremption;
-//
-//        if ($days < 0 || $days == 0) {
-//            $days = -1 * $days;
-//
-//            if ($days / 30 > 12) {
-//                $dateperemption = 'Expiré (il y\'a plus de ' . ceil(ceil($days / 30)) / 12 . ' ans)';
-//            }elseif ($days / 30 >= 1 AND $days < 12) {
-//                $dateperemption = 'Expiré (il y\'a ' . ceil($days / 30) . ' mois et ' . $days % 30 . ' jours)';
-//            }elseif ($days / 30 < 1) {
-//                $dateperemption = '<span class="text-danger">Expiré</span> (il y\'a ' . $days . ' jours)';
-//            }
-//        }else {
-//
-//            if ($days / 30 >= 1 AND $days / 30 <= 3 ) {
-//                $dateperemption = $date . '<span class="text-warning" style="font-style: italic; font-size: 11px;"> (va expiré dans ' . ceil($days / 30) . ' mois et ' . $days % 30 . ' jours )</span>';
-//            }elseif ($days / 30 < 1) {
-//                $dateperemption = $date . '<span style="font-style: italic; font-size: 11px;"> (va expiré dans ' . $days . ' jours)</span>';
-//            }
-//
-//        }
 
         $html = '<div class="produit" style="padding-bottom: 30px;">' .
             '<div class="line"><span class="label">Designation: </span><span class="value">' . $produit->prodesignation . '</span></div>' .
@@ -442,25 +329,7 @@ class ProduitController extends Controller
         
             '<div class="line"><span class="label">Nombre de produit par blog: </span><span class="value">' . $produit->pronbproduitBlog . '</span></div>';
         
-        $html .= '<div class="line"><span class="label">Stock en mouvement: </span>' . $stock_boutique;
-        if (!empty($produit->pronbproduitBlog) AND $produit->pronbproduitBlog !== '/' AND $produit->pronbproduitBlog !== 0) {
-            $html .= ' (' . $this->stock_boutique_by_produit($produit->proid) / $produit->pronbproduitBlog . ' ' . $produit->embalage . ')';
-        }
-        
         $html .= '</div>';
-
-       /* if (in_array('405', $_SESSION['stkdroits'])) {
-            $unite = $produit->uniabv;
-            if ($produit->unite == 'Aucun') {
-                $unite = '';
-            }
-            $html .= '<div class="line"><span class="label">Stock en magasin: </span>' . $stock_magasin  . ' ' . $unite;
-            if ($this->stock_magasin_by_produit($produit->proid) >= 0 && $produit->pronbproduitBlog > 0) {
-                $html .= ' (' . $this->stock_magasin_by_produit($produit->proid) / $produit->pronbproduitBlog . ' ' . $produit->embalage . ')';
-            }
-            
-            $html .= '</div>';
-        }*/
 
         $html .= '<div class="line"><span class="label">Fournisseur: </span><span class="value">' . ucfirst($produit->founom) . ' ' . ucfirst($produit->fouprenom) . '</span></div>' .
             '<div class="line"><span class="label">Seuil d\'alerte: </span><span class="value">' . $produit->proseuilalert . '</span></div>' .
@@ -496,13 +365,7 @@ class ProduitController extends Controller
                 '<td>' . $produit->proid . '</td>' .
                 '<td>' . $produit->prodesignation . '</td>' .
                 '<td>' . $produit->famille . '</td>' .
-               
-            $html .= '<td>';
-             if ($this->stock_boutique_by_produit($produit->proid) == 0) {
-                $html .=  '<span style="font-style: italic; font-size: 12px;">rupture</span>';
-             }else {
-                $html .= $this->stock_boutique_by_produit($produit->proid) . '</td>';
-             }
+
              $html .= '<td>';
              if (in_array('107', $_SESSION['stkdroits'])) {
                  $html .= '<a data-toggle="modal" href="#showAllInfosProduit" onclick="showAllInfosProduit(' . $produit->proid . '); return false" title="voir plus" class="table-action more-infos text-primary"><i class="fa fa-eye" style="color: #36AFEC;"></i></a>&nbsp;';
