@@ -17,28 +17,30 @@
                         <thead>
                             <th data-field="id">Ref.</th>
 
-                            <th data-field="name" data-sortable="true">Designation</th>
+                            <th data-field="name" data-sortable="true">Date</th>
 
-                            <th data-field="mouvement" data-sortable="true">Famille</th>
+                            <th data-field="quantite" data-sortable="true">Offshore</th>
 
-                            <th data-field="quantite" data-sortable="true">Stock Magasin</th>
+                            <th data-field="mouvement" data-sortable="true">Fournisseur</th>
 
                             <th data-field="action" data-sortable="true"></th>
                         </thead>
 
                         <tbody id="bodyTableProduit">
-                        <?php foreach ($produits as $produit) {
-                            if ($stock_function->stock_magasin_by_produit($produit->proid) > 0) {
+                        <?php foreach ($commandes as $commande) {
                                 ?>
-                                <tr>
-                                    <td><?php echo $produit->proid; ?></td>
-                                    <td><?php echo ucfirst($produit->prodesignation) ?></td>
-                                    <td><?php echo ucfirst($produit->famille) ?></td>
-                                    <td><?php echo $stock_function->stock_magasin_by_produit($produit->proid); ?></td>
-                                    <td><a href="javascript: loadInfosProduitEntree(<?php echo $produit->proid ?>)" class="text-success"><i class="fa fa-plus-circle"></i></a></td>
-                                </tr>
+                            <tr>
+                                <td><?php echo $commande->offid; ?></td>
+
+                                <td><?php echo ucfirst($commande->date) ?></td>
+
+                                <td><?php echo ucfirst($commande->offshore);?></td>
+
+                                <td><?php echo ucfirst($commande->fournisseur) ?></td>
+
+                                <td><a href="javascript: loadInfosProduitEntree(<?php echo $commande->offid ?>)" class="text-success"><i class="fa fa-plus-circle"></i></a></td>
+                            </tr>
                                 <?php
-                            }
                         } ?>
                         </tbody>
                     </table>
@@ -55,7 +57,7 @@
     var $table = $('#produits-table'),
         full_screen = false;
     $().ready(function(){
-        $('#loadProduitForEntree .modal-header h4').text("Produit disponible");
+        $('#loadProduitForEntree .modal-header h4').text("Commandes disponibles");
         $table.bootstrapTable({
             toolbar: ".toolbar",
 
@@ -81,5 +83,6 @@
             }
         });
     });
+
 
 </script>

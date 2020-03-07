@@ -67,18 +67,11 @@ class OffredetailModel extends Model
     public function show_produit_by_offre($idOffre)
     {
         $query = $this->makeQuery()
-            ->select($this->table . '.*', 'p.*')
+            ->select($this->table . '.*', 'p.*', 'un.unilibelle unite')
             ->join('produits as p', $this->table . '.produit = proid')
+            ->join('unitemesure as un', $this->table . '.unite = un.uniid')
             ->where('offre = ?');
         return $this->execute($query, [$idOffre]);
-    }
-
-    protected function findAllQuery(?array $fields = [], ?string $orderBy = null)
-    {
-        $fields = [$this->table . '.*', 'p.*'];
-        $orderBy = 'date DESC';
-        return parent::findAllQuery($fields, $orderBy)
-                ->join('produits p', 'produit = proid');
     }
 
     public function get_by_periode($start = '', $end = '')
@@ -101,7 +94,20 @@ class OffredetailModel extends Model
 
         $statement = 'SELECT ' . $this->table . '.*, produits.* FROM ' .
             $this->table . ' JOIN produits WHERE produit = proid AND date BETWEEN ? AND ?';
-        
+
         return $this->execute($query, [$start, $end]);
+    }
+
+    public function deletProduitFromCommande(int $idProduit)
+    {
+        return parent::delete_by('produit', $idProduit);
+    }
+
+    protected function findAllQuery(?array $fields = [], ?string $orderBy = null)
+    {
+        $fields = [$this->table . '.*', 'p.*'];
+        $orderBy = 'date DESC';
+        return parent::findAllQuery($fields, $orderBy)
+            ->join('produits p', 'produit = proid');
     }
 }

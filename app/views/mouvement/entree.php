@@ -10,33 +10,37 @@
 <div class="views-entree">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
 <!--                --><?php //$_SESSION['entrees'] = []; ?>
                 <table class="table table-responsive">
                     <thead>
-                        <th>Ref.</th>
-                        <th>Designation</th>
-                        <th>Famille</th>
-                        <th>Quantité</th>
+                        <th></th>
+                        <th>Offshore</th>
+                        <th>Commande</th>
+                        <th>Produit</th>
+                        <th>Date cmde</th>
+                        <th>Date Livraison</th>
                         <th></th>
                     </thead>
                     <tbody id="bodyTableProduitEntree">
-                    <?php if (isset($_SESSION['entrees']) AND !empty($_SESSION['entrees'])) : ?>
+                    <?php if (isset($_SESSION['newMouvements']) AND !empty($_SESSION['newMouvements'])) : ?>
                     <?php
                     $i    = 1;
                     $line = '';
-                        foreach ($_SESSION['entrees'] as $entree) {
-                            $line = $i;
-                            ?>
-                            <tr class="<?php echo $line; ?>">
-                                <td><?php echo $entree['idProduit'] ?></td>
-                                <td><?php echo ucfirst($entree['produit']) ?></td>
-                                <td><?php echo ucfirst($entree['famille']) ?></td>
-                                <td><?php echo $entree['quantite'] ?></td>
-                                <td><a href="javascript: removeProduitForEntree(<?php echo $entree['idProduit'] . ', ' . $i ?>)" class="btn abtn abtn-danger"><i class="fa fa-trash-o"></i></a></td>
-                            </tr>
-                            <?php
-                            $i ++;
+                    foreach ($_SESSION['newMouvements'] as $commde) {
+                        $line = $i;
+                        ?>
+                        <tr class="<?php echo $line; ?>">
+                            <td><?php echo $line; ?></td>
+                            <td><?php echo ($commde['offshore'] != null) ? $commde['offshore'] : '//' ?></td>
+                            <td><?php echo $commde['offre'] ?></td>
+                            <td><?php echo $commde['produit']; ?></td>
+                            <td><?php echo formatDate($commde['dateCmd'], 'd/m/Y') ?></td>
+                            <td><?php echo formatDate($commde['dateMvt'], 'd/m/yy') ?></td>
+                            <td><a href="javascript: removeProduitForEntree(<?php //echo $commde->offid . ', ' . $i ?>)" class="btn abtn abtn-danger"><i class="fa fa-trash-o"></i></a></td>
+                        </tr>
+                        <?php
+                        $i ++;
                     }
                      endif; ?>
                     </tbody>
@@ -49,7 +53,7 @@
 
                 <form method="post">
                     <div class="text-center">
-                        <?php if (isset($_SESSION['entrees']) AND !empty($_SESSION['entrees'])) : ?>
+                        <?php if (isset($_SESSION['newMouvements']) AND !empty($_SESSION['newMouvements'])) : ?>
                             <button type="submit" name="btnProcessEnd" class="btn btn-success" id="btnProcessEntree">Terminer <i class="fa fa-arrow-right"></i></button>
                         <?php else: ?>
                             <button type="submit" class="btn btn-default disabled" disabled id="btnProcessEntree">Terminer <i class="fa fa-arrow-right"></i></button>

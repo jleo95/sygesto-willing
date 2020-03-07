@@ -10,7 +10,7 @@ if ($printable == 1) {
 } else {
     $title .= 'en rupture';
 }
-$title .= ' (boutique)</h2>';
+$title .= ' (mouvement)</h2>';
 
 
 $table = '<table id="tableRecu" border="1" style="border-spacing: 0; border-collapse: collapse; width: 100%; border: .1px solid #111; ">' .

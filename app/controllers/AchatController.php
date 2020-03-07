@@ -123,8 +123,9 @@ class AchatController extends Controller
                 $offre = $this->session->offre;
                 $offre['offrealiserpar'] = $this->session->stkiduser;
                 $offre['offpaiement'] = $this->input->modePayement;
-
-
+//
+//                var_dump($offre);
+//                die();
                 if ($this->Offre->insert($offre)) {
                     $lastId = $this->Offre->lastInsert();
 

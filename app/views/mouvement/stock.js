@@ -31,7 +31,7 @@ $().ready(function(){
 
 function printStock(_idPrinter) {
     var frm = $("<form>", {
-        action: "boutique/imprimerStock",
+        action: "mouvement/imprimerStock",
         method: "post",
         target: '_blank'
     }).append($("<input>", {

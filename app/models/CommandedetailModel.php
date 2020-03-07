@@ -22,35 +22,6 @@ class CommandedetailModel extends Model
         $this->records = null;
     }
 
-
-    public function entrees_by_produit(int $idproduit): array
-    {
-//        if (is_null($this->records)) {
-//            $query = $this->makeQuery()->from($this->table)
-//                ->select($this->table . '.*', 'p.*')
-//                ->join('produits as p', 'proid = ' . $this->table . '.produit')
-//                ->where($this->table . '.produit = ?');
-//            $this->records = $this->execute($query, [$idproduit]);
-//        }
-        $query = $this->makeQuery()->from($this->table)
-            ->select($this->table . '.*', 'p.*')
-            ->join('produits as p', 'p.proid = ' . $this->table . '.produit')
-            ->where($this->table . '.produit = ?');
-        return $this->execute($query, [$idproduit]);
-    }
-
-    public function stock(int $idproduit)
-    {
-        $offres_by_produit = $this->entrees_by_produit($idproduit);
-        $quantite = 0;
-
-        foreach ($offres_by_produit as $offre) {
-            $quantite += $offre->quantite * 1;
-        }
-
-        return $quantite;
-    }
-
     /**
      * recuperer les vente en fonction des periode
      * @param string $start debut de la periode
@@ -82,29 +53,7 @@ class CommandedetailModel extends Model
         return $this->execute($query, [$start, $end]);
     }
 
-    /**
-     * Recupere les benifice des commande passer sur une periode
-     *
-     * @param null|string $start
-     * @param null|string $end
-     * @return float|int
-     */
-    public function get_benefice_by_periode(?string $start = "", ?string $end = '')
-    {
-        return $this->get_benefice($this->get_by_periode($start, $end));
-    }
 
-    /**
-     * Recupere les depense des commande passer sur une periode
-     *
-     * @param null|string $start
-     * @param null|string $end
-     * @return float|int
-     */
-    public function get_depense_by_periode(?string $start = "", ?string $end = '')
-    {
-        return $this->get_depense($this->get_by_periode($start, $end));
-    }
 
     /**
      * Recupere le benefice d'une commande

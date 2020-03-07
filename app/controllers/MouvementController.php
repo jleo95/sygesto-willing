@@ -12,7 +12,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Core\Router;
 
-class BoutiqueController extends Controller
+class MouvementController extends Controller
 {
 
     private $entrees;
@@ -21,22 +21,22 @@ class BoutiqueController extends Controller
     public function __construct()
     {
         parent::__construct();
+//        die('je suis construction');
         $this->entrees = $this->Mouvement->all([], 'mvtid DESC');
-        $this->sorties = $this->Commandedetail->all([], 'date DESC');
+//        $this->sorties = $this->Commandedetail->all([], 'date DESC');
     }
 
-    public function mouvement()
+    public function index()
     {
-        
-        $this->layout->assign('produits', $this->Produit->all());
-        $this->layout->assign('familles', $this->Famille->all());
+//
+//        $this->layout->assign('produits', $this->Produit->all());
+//        $this->layout->assign('familles', $this->Famille->all());
         $this->layout->assign('entrees', $this->tableEntree());
-        $this->layout->assign('sorties', $this->tableSortie());
-        $this->layout->setTitle('Boutique');
-        $this->layout->setTitle('Boutique', 'v');
-        $this->layout->setJS('boutique' . DS . 'index');
-        $this->layout->setStyle('boutique' . DS . 'boutique');
-        $this->layout->render('boutique' . DS . 'index');
+        $this->layout->setTitle('Mouvement');
+        $this->layout->setTitle('Mouvement', 'v');
+        $this->layout->setJS('mouvement' . DS . 'index');
+        $this->layout->setStyle('mouvement' . DS . 'mouvement');
+        $this->layout->render('mouvement' . DS . 'index');
     }
 
     public function stock()
@@ -86,72 +86,77 @@ class BoutiqueController extends Controller
         $this->layout->assign('prixtotaux', number_format($prixtotaux, 2, ',', ' '));
         $this->layout->assign('produits', $html);
 
-        $this->layout->setTitle('Stock boutique', 'p');
-        $this->layout->setTitle('Stock boutique');
-        $this->layout->setJS('boutique' . DS . 'stock');
-        $this->layout->setStyle('boutique' . DS . 'boutique');
-        $this->layout->render('boutique' . DS . 'stock');
+        $this->layout->setTitle('Stock mouvement', 'p');
+        $this->layout->setTitle('Stock mouvement');
+        $this->layout->setJS('mouvement' . DS . 'stock');
+        $this->layout->setStyle('mouvement' . DS . 'mouvement');
+        $this->layout->render('mouvement' . DS . 'stock');
     }
 
     public function entree()
     {
+//        $idOffre = 1;
+//        $commande = $this->Offre->get_by('off.offid', $idOffre);
+//        $commande_details = $this->Offredetail->show_produit_by_offre($idOffre);
+//        $commande = $this->Offre->get_by('off.offid', 1);
+//        var_dump($commande);
+//        var_dump($commande_details);
+////        die();
+//        unset($_SESSION['listOfNewLivraison']);
+//        unset($_SESSION['newMouvements']);
+        if (!isset($_SESSION['newMouvements']))
+            $_SESSION['newMouvements'] = [];
+
+
         if ($_POST) {
-            $arrId = [];
+            $data = [];
 
-            foreach ($this->session->entrees as $entree) {
-                if (!in_array($entree['idProduit'], $arrId)) {
-                    $arrId [] = $entree['idProduit'];
-                }
+            foreach ($this->session->newMouvements as $commande) {
+                $data = [
+                    'mvtdate' => $commande['dateMvt'],
+                    'mvtproduit' => $commande['produit'],
+                    'mvtquantite' => $commande['quantite'],
+                    'mvtoffshore' => $commande['offshore'],
+                    'mvtrealiserpar' => $this->session->stkiduser,
+                    'mvtoffre' => $commande['offre'],
+                ];
+                $this->Mouvement->insert($data);
             }
-
-            $quantite = 0;
-            $ent      = [];
-
-            foreach ($arrId as $id) {
-                $trouver = false;
-                $quantite = 0;
-                foreach ($this->session->entrees as $entree) {
-                    if ($id == $entree['idProduit']) {
-                        $trouver = true;
-                        $quantite += $entree['quantite'];
-                    }
-                    if ($trouver) {
-                        $ent['mvtproduit'] = $id;
-                        $ent['mvtdate'] = $entree['date'];
-                        $ent['mvtrealiserpar'] = $this->session->stkiduser;
-                    }
-                }
-                $ent['mvtquantite'] = $quantite;
-
-                $details [] = $ent;
-
-                $this->Mouvement->insert($ent);
-            }
-            unset($_SESSION['entrees']);
-            header('Location: ' . Router::url('boutique', 'mouvement'));
+            unset($_SESSION['newMouvements']);
+            header('Location: ' . Router::url('mouvement'));
         }
 
         $this->layout->setTitle('Entrée');
-        $this->layout->setTitle('Nouvelle entrée', 'v');
-        $this->layout->setJS('boutique' . DS . 'index');
-        $this->layout->setStyle('boutique' . DS . 'boutique');
-        $this->layout->render('boutique' . DS . 'entree');
+        $this->layout->setTitle('Nouvelle livraison', 'v');
+        $this->layout->setJS('mouvement' . DS . 'index');
+        $this->layout->setStyle('mouvement' . DS . 'mouvement');
+        $this->layout->render('mouvement' . DS . 'entree');
     }
 
+
+    /**
+     * On charge les commandes non livrer ici
+     */
     public function loadProduitForEntree()
     {
-        $this->layout->assign('produits', $this->Produit->all([], 'proid DESC'));
-        $this->layout->assign('stock_function', $this);
+        $commandes = $this->Offre->getCommandeNotLivreted();
+//        var_dump($commandes);
+//        die();
+        $this->layout->assign('commandes', $commandes);
         echo json_encode([
-            'bodyModal' => $this->layout->ajax('boutique' . DS . 'ajax' . DS . 'loadProduitForEntree')
+            'bodyModal' => $this->layout->ajax('mouvement' . DS . 'ajax' . DS . 'loadProduitForEntree')
         ]);
     }
 
     public function loadInfosProduitEntree()
     {
-        $this->layout->assign('stock_function', $this);
-        $this->layout->assign('produit', $this->Produit->get_by('proid', $this->input->idProduit));
-        $html = $this->layout->ajax('boutique' . DS . 'ajax' . DS . 'loadInfosProduitEntree');
+        $_SESSION['livraison'] = [];
+        $idOffre = intval($this->input->idOffre);
+        $commande = $this->Offre->get_by('off.offid', $idOffre);
+        $commande_details = $this->Offredetail->show_produit_by_offre($idOffre);
+        $this->layout->assign('commande', $commande);
+        $this->layout->assign('commande_details', $commande_details);
+        $html = $this->layout->ajax('mouvement' . DS . 'ajax' . DS . 'loadInfosProduitEntree');
         echo json_encode([
             'bodyModal' => $html
         ]);
@@ -258,33 +263,6 @@ class BoutiqueController extends Controller
         
         echo json_encode($data);
     }
-    
-    public function trieSortie1()
-    {
-        $idTrie  = intval($this->input->idTrie);
-        $this->sorties = [];
-
-        if ($idTrie == 1) {
-            $date = date('Y-m-d', time());
-            $this->sorties = $this->Commandedetail->get_by_periode();
-        } elseif ($idTrie == 2) {
-            $moth = date('m');
-            $year = date('Y');
-            $date = strtotime($year . '-' . $moth . '-01');
-
-            $this->sorties = $this->Commandedetail->get_by_periode(getStartingDay(), getLastDay());
-        } elseif ($idTrie == 3) {
-            $moth = date('m');
-            $year = date('Y');
-            $date = strtotime($year . '-' . $moth . '-01');
-
-            $this->sorties = $this->Commandedetail->get_by_periode($year . '-01-01 00:00:00', $year . '-12-31 23:59:59');
-        }
-
-        echo json_encode([
-            'tbodyTableSortie' => $this->autoLoadSortie()
-        ]);
-    }
 
     public function imprimerStock() {
         $idprint = intval($this->input->idPrinter);
@@ -315,7 +293,7 @@ class BoutiqueController extends Controller
         $this->layout->assign('pdf', new \App\Core\PDF());
         $this->layout->assign('stock', $this);
         $this->layout->assign('printable', $idprint);
-        $this->layout->render('boutique' . DS . 'impression' . DS . 'stock_1', TRUE);
+        $this->layout->render('mouvement' . DS . 'impression' . DS . 'stock_1', TRUE);
     }
 
     public function impressionMouvement() {
@@ -325,7 +303,7 @@ class BoutiqueController extends Controller
         $this->layout->assign('pdf', new \App\Core\PDF());
         $this->layout->assign('stock', $this);
         $this->layout->assign('printable', $idprint);
-        $this->layout->render('boutique' . DS . 'impression' . DS . 'mouvement', TRUE);
+        $this->layout->render('mouvement' . DS . 'impression' . DS . 'mouvement', TRUE);
     }
 
     public function imprimer()
@@ -361,49 +339,112 @@ class BoutiqueController extends Controller
         $this->layout->assign('pdf', $pdf);
         $this->layout->assign('produits', $produits);
         $this->layout->assign('printable', $printable);
-        $this->layout->render('boutique' . DS . 'impression' . DS . 'stock', TRUE);
+        $this->layout->render('mouvement' . DS . 'impression' . DS . 'stock', TRUE);
+    }
+
+    public function removeProduitFromCommande()
+    {
+        $idProduit = $this->input->idCommande;
+        $delete = $this->Offredetail->deletProduitFromCommande($idProduit);
+
+        echo json_encode(['idCommande' => $idProduit]);
+    }
+
+    #livraison
+
+    public function addLivraisonOnView()
+    {
+        $count = count($_SESSION['newMouvements']) + 1;
+        $idOffre = intval($this->input->idOffre);
+        $idOffshore = intval($this->input->idOffre);
+        $dateMvt = (isset($this->input->dateMvt) && !empty($this->input->dateMvt)) ? $this->input->dateMvt : date('Y-m-d H:i:s', time());
+        $commandes  = $this->Offredetail->show_produit_by_offre($idOffre);
+        $commande  = $this->Offre->get_by('off.offid', $idOffre);
+        $setData = (isset($_POST['setData'])) ? $_POST['setData'] : [];
+        $item = [];
+        $idArray = [];
+
+        foreach ($setData as $setDatum) {
+            $trouver = 0;
+            $quantite = 0;
+            foreach ($setData as $d) {
+                if ($setDatum['produit'] == $d['produit']) {
+                    $trouver ++;
+                    $quantite = $d['produit'];
+                }
+            }
+            if ($trouver == 1){
+//                $idArray[] = $setDatum['produit'];
+                $setDatum['dateCmd'] = $commande->date;
+                $setDatum['dateMvt'] = $dateMvt;
+                $setDatum['quantite'] = $quantite;
+                $item[] = $setDatum;
+            }
+        }
+
+        $tmp = $item;
+
+        foreach ($commandes as $cmd) {
+            $trouver = false;
+            foreach ($tmp as $t) {
+                if ($cmd->produit == $t['produit'])
+                    $trouver = true;
+            }
+            if (!$trouver)
+                $item[] = [
+                        'produit' => intval($cmd->produit),
+                        'quantite' => $cmd->quantite,
+                        'offre' => $idOffre,
+                        'offshore' => $idOffshore,
+                        'dateMvt' => $dateMvt,
+                        'dateCmd' => $commande->date
+                    ];
+        }
+
+        $date = (isset($this->input->date)) ? $this->input->date : date('Y-m-d H:m', time());
+
+        foreach ($item as $i) {
+            $_SESSION['newMouvements'][] = $i;
+        }
+//        $_SESSION['newMouvements'][] =
+
+
+        $html = '';
+        foreach ($item as $i) {
+            $html .= '<tr>' .
+                        '<td>' . $count ++ . '</td>' .
+                        '<td>'. $i['offshore'] . '</td>' .
+                        '<td>'. $i['offre'] . '</td>' .
+                        '<td>'. $i['produit'] . '</td>' .
+                        '<td>'. $i['dateCmd'] . '</td>' .
+                        '<td>'. $i['dateMvt']. '</td>' .
+                        '<td><a href="javascript: removeProduitForEntree(<?php echo $commde->offid . \', \' . $i ?>)" class="btn abtn abtn-danger"><i class="fa fa-trash-o"></i></a></td>' .
+                    '</tr>';
+        }
+        echo json_encode([
+            'livraison' => $this->input->idOffre,
+            'html' => $html
+        ]);
     }
 
     private function tableEntree()
     {
-        $entrees = $this->entrees;
+        $entrees = (!empty($this->entrees)) ? $this->entrees : [];
         $html    = '';
         $date    = '';
         foreach ($entrees as $entree) {
             if (date('Y-m-d', strtotime($entree->mvtdate)) === date('Y-m-d')) {
                 $date = date('H:i:s', strtotime($entree->mvtdate));
             } else {
-                $date = $entree->mvtdate;
+                $date = formatDate($entree->mvtdate, 'd/m/y');
             }
 
             $html .= '<tr>' .
-                '<td>' . $entree->proid . '</td>'.
-                '<td>' . ucfirst($entree->prodesignation) . '</td>'.
-                '<td><span class="text-success"><i class="fa fa-sign-out"></i>Entrée</span></td>'.
-                '<td><span class="text-success"><i class="fa fa-plus" style="font-size: 10px;"></i>' . $entree->mvtquantite . '</span></td>'.
-                '<td>' . $date . '</td>'.
-                '</tr>';
-        }
-        return $html;
-    }
-
-    private function tableSortie()
-    {
-        $sorties = $this->sorties;
-        $html    = '';
-        $date    = '';
-        foreach ($sorties as $sortie) {
-            if (date('Y-m-d', strtotime($sortie->date)) === date('Y-m-d')) {
-                $date = date('H:i:s', strtotime($sortie->date));
-            } else {
-                $date = $sortie->date;
-            }
-
-            $html .= '<tr>' .
-                        '<td>' . $sortie->proid . '</td>'.
-                        '<td>' . ucfirst($sortie->prodesignation) . '</td>'.
-                        '<td><span class="text-danger"><i class="fa fa-sign-out"></i>Sorite</span></td>'.
-                        '<td><span class="text-danger"><i class="fa fa-minus" style="font-size: 10px;"></i>' . $sortie->quantite . '</span></td>'.
+                        '<td>' . $entree->mvtid . '</td>'.
+                        '<td>' . $entree->mvtoffshore . '</td>'.
+                        '<td>' . $entree->mvtoffre . '</td>'.
+                        '<td>' . $entree->mvtproduit . " #" . $entree->prodesignation . '#</td>'.
+                        '<td><span class="text-success"><i class="fa fa-plus" style="font-size: 10px;"></i>' . $entree->mvtquantite . '</span></td>'.
                         '<td>' . $date . '</td>'.
                     '</tr>';
         }

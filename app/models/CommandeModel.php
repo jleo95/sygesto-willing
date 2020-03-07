@@ -62,4 +62,5 @@ class CommandeModel extends Model
        return parent::findByQuery($nameFields, $fields, $orderBy)
                 ->join('clients c', 'cmdclient = cliid');
    }
+
 }

@@ -174,8 +174,6 @@ class ProduitController extends Controller
                     'id' => $produit->proid,
                     'name' => $produit->prodesignation,
                     'family' => $produit->famille,
-//                    'country' => '<span style="font-style: italic;">' . number_format($produit->proprixUnitVente, 2, ',', ' ') . '</span>',
-//                    'prixGlobalVente' => '<span style="font-style: italic;">' . number_format($produit->proprixblogVente, 2, ',', ' ') . '</span>',
                     'stockboutique' => $stock
                 ];
 
@@ -444,7 +442,7 @@ class ProduitController extends Controller
         
             '<div class="line"><span class="label">Nombre de produit par blog: </span><span class="value">' . $produit->pronbproduitBlog . '</span></div>';
         
-        $html .= '<div class="line"><span class="label">Stock en boutique: </span>' . $stock_boutique;
+        $html .= '<div class="line"><span class="label">Stock en mouvement: </span>' . $stock_boutique;
         if (!empty($produit->pronbproduitBlog) AND $produit->pronbproduitBlog !== '/' AND $produit->pronbproduitBlog !== 0) {
             $html .= ' (' . $this->stock_boutique_by_produit($produit->proid) / $produit->pronbproduitBlog . ' ' . $produit->embalage . ')';
         }

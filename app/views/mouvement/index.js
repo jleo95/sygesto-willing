@@ -58,7 +58,7 @@ function loadProduitForEntree() {
     $('#loadProduitForEntree .modal-dialog').addClass("modal-lg");
     $('#loadProduitForEntree .modal-dialog').removeClass("modal-sm");
     $.ajax({
-        url: 'boutique/loadProduitForEntree',
+        url: 'mouvement/loadProduitForEntree',
         type: 'post',
         dataType: 'json',
         data: {},
@@ -72,24 +72,48 @@ function loadProduitForEntree() {
     })
 }
 
-function loadInfosProduitEntree(idProduit) {
+function loadProduitForEntree2() {
+    $('#loadProduitForEntree .modal-header h4').text("Produit disponible");
+    $('#loadProduitForEntree .modal-dialog').addClass("modal-lg");
+    $('#loadProduitForEntree .modal-dialog').removeClass("modal-sm");
     $.ajax({
-        url: 'boutique/loadInfosProduitEntree',
+        url: 'mouvement/loadProduitForEntree',
         type: 'post',
         dataType: 'json',
-        data: {idProduit: idProduit},
+        data: {},
         success: function (data) {
             $('#loadProduitForEntree .modal-body').html(data.bodyModal);
-            $('#loadProduitForEntree .modal-header h4').text("Produit");
-            $('#loadProduitForEntree .modal-dialog').removeClass("modal-lg");
-            $('#loadProduitForEntree .modal-dialog').addClass("modal-sm");
+            $('#loadProduitForEntree .modal-header h4').text("Produit disponible");
+        },
+        error: function (xhr) {
+            alert('Erreur de chargement. Veilez réessayer plutard');
         }
     })
 }
 
+function loadInfosProduitEntree(idOffre) {
+    $.ajax({
+        url: 'mouvement/loadInfosProduitEntree',
+        type: 'post',
+        dataType: 'json',
+        data: {idOffre: idOffre},
+        success: function (data) {
+            console.log(data);
+            $('#loadProduitForEntree .modal-body').html(data.bodyModal);
+            $('#loadProduitForEntree .modal-header h4').text("Commande");
+            // $('#loadProduitForEntree .modal-dialog').removeClass("modal-lg");
+            // $('#loadProduitForEntree .modal-dialog').addClass("modal-sm");
+        }
+    })
+}
+
+function removeProduitFromCommande(idOffre) {
+    $.ajax
+}
+
 function addInEntree(idProduit) {
     $.ajax({
-        url: 'boutique/addInEntree',
+        url: 'mouvement/addInEntree',
         type: 'post',
         dataType: 'json',
         data: {
@@ -114,7 +138,7 @@ function addInEntree(idProduit) {
 
 function removeProduitForEntree(idProduit, line) {
     $.ajax({
-        url: 'boutique/removeProduitForEntree',
+        url: 'mouvement/removeProduitForEntree',
         type: 'post',
         dataType: 'json',
         data: {
@@ -142,7 +166,7 @@ function removeProduitForEntree(idProduit, line) {
 function trieEntree1(idTrie) {
     if (idTrie != '') {
          $.ajax({
-            url: 'boutique/trieEntree1',
+            url: 'mouvement/trieEntree1',
             type: 'post',
             dataType: 'json',
             data: {
@@ -200,7 +224,7 @@ function trieEntreeOther(idTrie) {
 
 function trieEntreeOther2(idTrie, secondeId) {
     $.ajax({
-        url: 'boutique/trieEntreeOther',
+        url: 'mouvement/trieEntreeOther',
         type: 'post',
         dataType: 'json',
         data: {
@@ -220,7 +244,7 @@ function trieEntreeOther2(idTrie, secondeId) {
 
 function triByProduit(idProduit, idTrie) {
     $.ajax({
-        url: 'boutique/triByProduit',
+        url: 'mouvement/triByProduit',
         type: 'post',
         dataType: 'json',
         data: {
@@ -247,7 +271,7 @@ function triByProduit(idProduit, idTrie) {
 function trieSortie1(idTrie) {
     if (idTrie != '') {
          $.ajax({
-            url: 'boutique/trieSortie1',
+            url: 'mouvement/trieSortie1',
             type: 'post',
             dataType: 'json',
             data: {
@@ -267,7 +291,7 @@ function trieSortie1(idTrie) {
 
 function printProduit(_idPrinter) {
     var frm = $("<form>", {
-        action: "boutique/imprimer",
+        action: "mouvement/imprimer",
         method: "post",
         target: '_blank'
     }).append($("<input>", {

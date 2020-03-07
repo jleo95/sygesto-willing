@@ -83,19 +83,21 @@ $router->post('achat/trieAchat', 'achat#trieAchat');
 $router->post('achat/loadForEdit', 'achat#loadForEdit');
 $router->post('achat/edit', 'achat#edit');
 
-#boutique
-$router->get('boutique/mouvement', 'boutique#mouvement');
-$router->get('boutique/stock', 'boutique#stock');
-$router->get('boutique/impressionMouvement', 'boutique#imprimer');
-$router->get('boutique/entree', 'boutique#entree');
-$router->post('boutique/trieEntree1', 'boutique#trieEntree1');
-$router->post('boutique/entree', 'boutique#entree');
-$router->post('boutique/trieSortie1', 'boutique#trieSortie1');
-$router->post('boutique/imprimerStock', 'boutique#imprimerStock');
-$router->post('boutique/triByProduit', 'boutique#triByProduit');
-$router->post('boutique/loadProduitForEntree', 'boutique#loadProduitForEntree');
-$router->post('boutique/loadInfosProduitEntree', 'boutique#loadInfosProduitEntree');
-$router->post('boutique/addInEntree', 'boutique#addInEntree');
+#mouvement
+$router->get('mouvement', 'Mouvement#index');
+$router->get('mouvement/stock', 'Mouvement#stock');
+$router->get('mouvement/entree', 'Mouvement#entree');
+$router->post('mouvement/entree', 'Mouvement#entree');
+//$router->get('mouvement/impressionMouvement', 'mouvement#imprimer');
+//$router->post('mouvement/trieEntree1', 'mouvement#trieEntree1');
+//$router->post('mouvement/trieSortie1', 'mouvement#trieSortie1');
+//$router->post('mouvement/imprimerStock', 'mouvement#imprimerStock');
+//$router->post('mouvement/triByProduit', 'mouvement#triByProduit');
+$router->post('mouvement/loadProduitForEntree', 'mouvement#loadProduitForEntree');
+$router->post('mouvement/loadInfosProduitEntree', 'mouvement#loadInfosProduitEntree');
+//$router->post('mouvement/addInEntree', 'mouvement#addInEntree');
+$router->post('mouvement/removeProduitFromCommande', 'mouvement#removeProduitFromCommande');
+$router->post('mouvement/addLivraisonOnView', 'mouvement#addLivraisonOnView');
 
 #magasin
 $router->get('magasin/mouvement', 'magasin#mouvement');

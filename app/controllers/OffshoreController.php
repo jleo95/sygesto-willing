@@ -395,7 +395,7 @@ class OffshoreController extends Controller
             '<div class="line"><span class="label">Prix en blog de vente: </span><span class="value" style="font-style: italic">' . number_format($offshore->proprixblogVente, 2, ',', ' ') . ' frcfa</span></div>' .
             '<div class="line"><span class="label">Nombre de produit par blog: </span><span class="value">' . $offshore->pronbproduitBlog . '</span></div>';
         
-        $html .= '<div class="line"><span class="label">Stock en boutique: </span>' . $stock_boutique;
+        $html .= '<div class="line"><span class="label">Stock en mouvement: </span>' . $stock_boutique;
         if (!empty($offshore->pronbproduitBlog) AND $offshore->pronbproduitBlog !== '/' AND $offshore->pronbproduitBlog !== 0) {
             $html .= ' (' . $this->stock_boutique_by_produit($offshore->offid) / $offshore->pronbproduitBlog . ' ' . $offshore->embalage . ')';
         }
