@@ -28,12 +28,12 @@ class Router
         $this->url = $url;
     }
 
-    public function get(string $path, $callable, string $name = null)
+    public function get(string $path, $callable, string $name = null, $params = [])
     {
         return $this->add($path, $callable, $name, 'GET');
     }
 
-    public function post(string $path, $callable, string $name = null)
+    public function post(string $path, $callable, string $name = null, $params = [])
     {
         return $this->add($path, $callable, $name, 'POST');
     }

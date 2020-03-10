@@ -26,7 +26,7 @@ class ProduitModel extends Model {
     protected function findAllQuery(?array $fields = [], ?string $orderBy = null)
     {
         $fields = explode(',', 'proid, prodesignation, proreference,' .
-            'prodatePeremption, pronbproduitBlog, proseuilalert, unilibelle unite, uniabv, famlibelle famille, famembalageBlog embalage, ' .
+            'pronbproduitBlog, proseuilalert, unilibelle unite, uniabv, famlibelle famille, famembalageBlog embalage, ' .
             'founom, fouprenom');
         return parent::findAllQuery($fields, $orderBy)
                 ->join('familles', 'profamille = famid')
@@ -34,19 +34,6 @@ class ProduitModel extends Model {
                 ->join('unitemesure', 'prounitemessure = uniid');
     }
 
-//    public function get_by($nameFields = '', $value, $fields = [], $orderBy = '', $one = TRUE) {
-//
-//        $statement = 'SELECT produits.*, unilibelle unite, uniabv, famlibelle famille, famembalageBlog embalage, ' .
-//            'founom, fouprenom FROM produits JOIN familles JOIN fournisseurs JOIN unitemesure ' .
-//            'WHERE profamille = famid AND fouid = profournisseur AND prounitemessure = uniid AND ' . $nameFields . ' = ?';
-//
-//        if (!empty($orderBy)) {
-//            $statement .= ' ORDER BY ' . $orderBy;
-//        }
-//        $res = $this->execute($statement, [$value], $one);
-//
-//        return $res;
-//    }
 
     protected function findByQuery(?string $nameFields = null, ?array $fields = null, ?string $orderBy = null)
     {

@@ -176,6 +176,15 @@ $router->post('/produit/showAllInfosProduit', 'produit#showAllInfosProduit');
 $router->post('/produit/laodForEditeProduit', 'produit#laodForEditeProduit');*/
 
 
+
+#commande
+$router->get('commande', 'commande#index', 'commande');
+$router->get('commande/ajout', 'commande#ajout');
+$router->post('commande/ajout', 'commande#ajout');
+$router->get('commande/selectproduit', 'commande#selectproduit');
+$router->post('commande/addProduitToCommande', 'commande#addProduitToCommande');
+$router->post('commande/deletProduitFromCommande', 'commande#deletProduitFromCommande');
+
 /**
  * run app
  */

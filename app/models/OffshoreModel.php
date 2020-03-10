@@ -19,7 +19,7 @@ class OffshoreModel extends Model {
     public function __construct()
     {
         parent::__construct();
-        $this->table = 'offshore';
+        $this->table = 'offshores';
         $this->id = 'offid';
     }
 

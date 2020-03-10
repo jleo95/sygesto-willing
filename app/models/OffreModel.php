@@ -32,16 +32,31 @@ class OffreModel extends Model
         return $this->execute($query);
     }
 
+    protected function findAllQuery(?array $fields = [], ?string $orderBy = null){
+        $query = $this->makeQuery()
+            ->select('off.offid, off.offdate, off.offdescription, offs.offid as offshore_id, offs.offdescription as offshore, paie.paiid, paie.pailibelle')
+            ->from($this->table . ' off')
+            ->join('offshores offs', 'offs.offid = offshore')
+            ->join('paiements paie', 'paie.paiid = offpaiement');
 
-    protected function findByQuery(?string $nameFields = null, ?array $fields = null, ?string $orderBy = null)
-    {
-        $fields = [$this->table . '.*', 'f.*'];
-        return parent::findByQuery($nameFields, $fields, $orderBy)
-            ->select('off.offid, off.offdate as date, off.offdateLivraison livraison, off.offdescription description, fouid, CONCAT(founom, \' \', fouprenom) AS fournisseur, offs.offdescription as offshore')
-            ->from($this->table . ' as off')
-            ->join('fournisseurs four', 'fouid = offfournisseur')
-            ->join('offshores offs', 'offs.offid = offshore');
+        if ($orderBy != null) {
+            $query->order($orderBy);
+        }
+        return $query;
     }
 
+
+//    protected function findByQuery(?array $fields = [], ?string $orderBy = null)
+//    {
+//        die('hello');
+//        $query = parent::findByQuery($fields, $orderBy)
+//            ->select('off.offid, off.offdate as date, off.offdateLivraison livraison, off.offdescription description,' .
+//                ' fouid, CONCAT(founom, \' \', fouprenom) AS fournisseur, offs.offdescription as offshore')
+//            ->from($this->table . ' as off')
+//            ->join('offshores offs', 'offs.offid = offshore');
+//
+//        echo $query;
+//        die();
+//    }
 
 }

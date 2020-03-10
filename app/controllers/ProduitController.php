@@ -386,36 +386,6 @@ class ProduitController extends Controller
         $html = $this->layout->ajax('produit' . DS . 'ajax' . DS . 'table');
         return $html;
     }
-
-    private function loadTable2()
-    {
-        $produits = $this->Produit->all([], 'proid DESC');
-        $html     = '';
-        $i = 1;
-        foreach ($produits as $produit) {
-            $html .= '<tr>' .
-                '<td>' . $i++ . '</td>' .
-                '<td>' . $produit->prodesignation . '</td>' .
-                '<td>' . $produit->famille . '</td>';
-
-            
-
-            $html .= '<td>';
-            if (in_array('103', $_SESSION['stkdroits'])) {
-                $html .= '<a data-toggle="modal" href="#editeProduit" onclick="laodForEditeProduit(' . $produit->proid . '); return false" title="editer"><i class="fa fa-edit" style="color: #05AE0E;"></i></a>';
-            }else {
-                $html .= '<a href="javascript: void(0)" class="disabled" title="editer"><i class="fa fa-edit"></i></a>';
-            }
-            if (in_array('102', $_SESSION['stkdroits'])) {
-                $html .= '<a data-toggle="modal" href="#deletProuit" onclick="laodDataForDeleteProduit(' . $produit->proid . '); return false;" title="supprimer"><i class="fa fa-remove" style="color: #FF3B30;"></i></a>';
-            } else {
-                $html .= '<a href="javascript: void(0)" class="disabled" title="editer"><i class="fa fa-remove"></i></a>';
-            }
-            $html .= '</td>' .
-                '</tr>';
-        }
-        return $html;
-    }
     
     private function autoLoad () {
         

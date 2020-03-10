@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 10 mars 2020 à 15:40
+-- Généré le :  mar. 10 mars 2020 à 22:45
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -323,8 +323,8 @@ INSERT INTO `menus` (`menid`, `menlibelle`, `menhref`, `menicone`, `mengroupe`, 
 (5, 'Effectuer une livraison', 'vente/add', '', 3, 301, 0),
 (6, 'Mes livraisons', 'vente/mesventes', '', 3, 304, 0),
 (7, 'Toutes les livraisons', 'vente/all', '', 3, 305, 0),
-(8, 'Toutes les commandes', 'achat', '', 2, 203, 0),
-(9, 'Passer une commande', 'achat/add', '', 2, 201, 0),
+(8, 'Toutes les commandes', 'commande', '', 2, 203, 0),
+(9, 'Passer une commande', 'commande/ajout', '', 2, 201, 0),
 (10, 'Livraison effectuées', 'achat/livres', '', 2, 206, 1),
 (11, 'Livraison en cours', 'achat/encours', '', 2, 204, 1),
 (12, 'Dépense livraison', 'achat/depense', '', 2, 207, 1),
@@ -369,7 +369,7 @@ CREATE TABLE IF NOT EXISTS `mouvements` (
   KEY `fk_mouvement_offshore` (`mvtoffshore`),
   KEY `fk_mvtoffre` (`mvtoffre`) USING BTREE,
   KEY `mvtproduit` (`mvtproduit`)
-) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `mouvements`
@@ -385,7 +385,8 @@ INSERT INTO `mouvements` (`mvtid`, `mvtdate`, `mvtproduit`, `mvtquantite`, `desc
 (19, '2020-03-07 00:00:00', 66, 5000, NULL, 1, 3, 1, 3),
 (20, '2020-03-07 00:00:00', 68, 200, NULL, 1, 3, 1, 3),
 (21, '2020-03-19 00:00:00', 67, 100, NULL, 1, 1, 1, 1),
-(22, '2020-03-10 00:00:00', 67, 100, NULL, 1, 1, 1, 1);
+(22, '2020-03-10 00:00:00', 67, 100, NULL, 1, 1, 1, 1),
+(23, '2020-03-12 00:00:00', 67, 100, NULL, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -397,27 +398,27 @@ DROP TABLE IF EXISTS `offres`;
 CREATE TABLE IF NOT EXISTS `offres` (
   `offid` int(11) NOT NULL AUTO_INCREMENT,
   `offdate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `offdateLivraison` date NOT NULL,
+  `offdateLivraison` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `offdescription` varchar(45) DEFAULT NULL,
   `offvalidite` int(11) NOT NULL DEFAULT '0',
   `offpaiement` int(11) DEFAULT NULL,
-  `offfournisseur` int(11) DEFAULT NULL,
   `offrealiserpar` int(11) NOT NULL,
   `offshore` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`offid`),
   KEY `fk_offre_payement1_idx` (`offpaiement`),
-  KEY `fk_offre_fournisseurs1_idx` (`offfournisseur`),
   KEY `fk_offre_user1_idx` (`offrealiserpar`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `offres`
 --
 
-INSERT INTO `offres` (`offid`, `offdate`, `offdateLivraison`, `offdescription`, `offvalidite`, `offpaiement`, `offfournisseur`, `offrealiserpar`, `offshore`) VALUES
-(1, '2020-02-29 00:13:51', '2020-03-24', NULL, 0, 2, 11, 1, 0),
-(2, '2020-02-29 00:14:20', '2020-02-29', NULL, 0, 1, 12, 1, 0),
-(3, '2020-03-03 02:49:06', '2020-03-31', NULL, 0, 1, 11, 1, 1);
+INSERT INTO `offres` (`offid`, `offdate`, `offdateLivraison`, `offdescription`, `offvalidite`, `offpaiement`, `offrealiserpar`, `offshore`) VALUES
+(5, '2020-03-10 22:25:00', '2020-03-10 21:25:28', NULL, 0, 1, 1, 1),
+(6, '2020-03-10 22:37:00', '2020-03-10 21:37:03', NULL, 0, 1, 1, 1),
+(7, '2020-03-10 22:37:00', '2020-03-10 21:37:57', NULL, 0, 1, 1, 1),
+(8, '2020-03-10 22:40:00', '2020-03-10 21:40:55', NULL, 0, 2, 1, 1),
+(9, '2020-03-11 00:00:00', '2020-03-10 21:41:37', NULL, 0, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -430,24 +431,25 @@ CREATE TABLE IF NOT EXISTS `offre_detail` (
   `produit` int(11) NOT NULL,
   `offre` int(11) NOT NULL,
   `quantite` float DEFAULT NULL,
-  `unite` int(11) NOT NULL DEFAULT '1',
   `description` text,
   PRIMARY KEY (`produit`,`offre`),
   KEY `fk_produits_has_offres_offres1_idx` (`offre`),
-  KEY `fk_produits_has_offres_produits1_idx` (`produit`),
-  KEY `unite_mesure_commande_produit` (`unite`)
+  KEY `fk_produits_has_offres_produits1_idx` (`produit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `offre_detail`
 --
 
-INSERT INTO `offre_detail` (`produit`, `offre`, `quantite`, `unite`, `description`) VALUES
-(61, 3, 540, 1, NULL),
-(63, 2, 10, 1, NULL),
-(66, 3, 5000, 1, NULL),
-(67, 1, 100, 1, NULL),
-(68, 3, 200, 1, NULL);
+INSERT INTO `offre_detail` (`produit`, `offre`, `quantite`, `description`) VALUES
+(63, 5, 100, NULL),
+(63, 6, 10000, NULL),
+(63, 8, 14, NULL),
+(64, 5, 7000, NULL),
+(65, 9, 14777, NULL),
+(67, 5, 15, NULL),
+(67, 6, 1477, NULL),
+(71, 5, 50000, NULL);
 
 -- --------------------------------------------------------
 
@@ -476,7 +478,7 @@ CREATE TABLE IF NOT EXISTS `offshores` (
 --
 
 INSERT INTO `offshores` (`offid`, `offdescription`, `offresponsable`, `offdatedebut`, `offdatefin`, `offclient`, `offrealiserpar`, `offdatecreation`) VALUES
-(0, 'offshore d\'urgence de la SNH à faire très att', 1, '2020-02-09 00:00:00', '2020-02-29 00:00:00', 1, 1, '2020-02-26 00:00:00');
+(1, 'offshore d\'urgence de la SNH à faire très att', 1, '2020-02-09 00:00:00', '2020-02-29 00:00:00', 1, 1, '2020-02-26 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -519,27 +521,29 @@ CREATE TABLE IF NOT EXISTS `produits` (
   `profournisseur` int(11) NOT NULL,
   `prorealiserpar` int(11) NOT NULL,
   `prodatecreation` datetime NOT NULL,
-  `prodatePeremption` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`proid`),
   KEY `fk_produits_unitemesure1_idx` (`prounitemessure`),
   KEY `profamille` (`profamille`),
   KEY `prorealiserpar` (`prorealiserpar`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `produits`
 --
 
-INSERT INTO `produits` (`proid`, `prodesignation`, `proreference`, `datecreation`, `profamille`, `pronbproduitBlog`, `prounitemessure`, `proseuilalert`, `profournisseur`, `prorealiserpar`, `prodatecreation`, `prodatePeremption`) VALUES
-(60, 'Btle Tangui', NULL, NULL, 7, 1, 2, 2, 12, 1, '2020-02-27 15:21:46', '2020-04-30 00:00:00'),
-(61, 'Btle Tangui', NULL, NULL, 7, 1, 2, 2, 12, 1, '2020-02-27 15:25:43', '2020-04-30 00:00:00'),
-(62, 'Btle Tangui', NULL, NULL, 7, 1, 1, 2, 12, 1, '2020-02-27 15:27:30', '2020-04-24 00:00:00'),
-(63, 'test', NULL, NULL, 5, 1, 2, 15, 11, 1, '2020-02-27 15:39:48', '2020-02-29 00:00:00'),
-(64, 'Btle Tangui', NULL, NULL, 5, 55, 1, 15, 12, 1, '2020-02-27 15:58:25', '2020-02-29 00:00:00'),
-(65, 'Cable Electrique ', NULL, NULL, 5, 25, 1, 15, 11, 1, '2020-02-28 09:43:41', '2020-02-11 00:00:00'),
-(66, 'Cable Electrique ', NULL, NULL, 5, 25, 1, 15, 11, 1, '2020-02-28 09:43:52', '2020-02-11 00:00:00'),
-(67, 'Cable Electrique ', NULL, NULL, 5, 25, 1, 15, 11, 1, '2020-02-28 09:46:50', '2020-02-11 00:00:00'),
-(68, 'Cable Electrique ', NULL, NULL, 6, 25, 2, 15, 11, 1, '2020-02-28 09:47:31', '2020-02-18 00:00:00');
+INSERT INTO `produits` (`proid`, `prodesignation`, `proreference`, `datecreation`, `profamille`, `pronbproduitBlog`, `prounitemessure`, `proseuilalert`, `profournisseur`, `prorealiserpar`, `prodatecreation`) VALUES
+(60, 'Btle Tangui', NULL, NULL, 7, 1, 2, 2, 12, 1, '2020-02-27 15:21:46'),
+(61, 'Btle Tangui', NULL, NULL, 7, 1, 2, 2, 12, 1, '2020-02-27 15:25:43'),
+(62, 'Btle Tangui', NULL, NULL, 7, 1, 1, 2, 12, 1, '2020-02-27 15:27:30'),
+(63, 'test', NULL, NULL, 5, 1, 2, 15, 11, 1, '2020-02-27 15:39:48'),
+(64, 'Btle Tangui', NULL, NULL, 5, 55, 1, 15, 12, 1, '2020-02-27 15:58:25'),
+(65, 'Cable Electrique ', NULL, NULL, 5, 25, 1, 15, 11, 1, '2020-02-28 09:43:41'),
+(66, 'Cable Electrique ', NULL, NULL, 5, 25, 1, 15, 11, 1, '2020-02-28 09:43:52'),
+(67, 'Cable Electrique ', NULL, NULL, 5, 25, 1, 15, 11, 1, '2020-02-28 09:46:50'),
+(68, 'Cable Electrique ', NULL, NULL, 6, 25, 2, 15, 11, 1, '2020-02-28 09:47:31'),
+(69, 'Cable Electrique ', NULL, NULL, 6, 25, 1, 15, 12, 1, '2020-03-10 16:53:58'),
+(70, 'Cable Electrique ', NULL, NULL, 6, 25, 1, 15, 12, 1, '2020-03-10 16:54:20'),
+(71, 'Cable Electrique ', NULL, NULL, 6, 25, 1, 15, 12, 1, '2020-03-10 16:55:59');
 
 -- --------------------------------------------------------
 
@@ -644,7 +648,6 @@ ALTER TABLE `commande_detail`
 -- Contraintes pour la table `offres`
 --
 ALTER TABLE `offres`
-  ADD CONSTRAINT `fk_offre_fournisseurs1` FOREIGN KEY (`offfournisseur`) REFERENCES `fournisseurs` (`fouid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_offre_payement1` FOREIGN KEY (`offpaiement`) REFERENCES `paiements` (`paiid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_offre_user1` FOREIGN KEY (`offrealiserpar`) REFERENCES `users` (`useid`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -653,8 +656,7 @@ ALTER TABLE `offres`
 --
 ALTER TABLE `offre_detail`
   ADD CONSTRAINT `fk_produits_has_offres_offres1` FOREIGN KEY (`offre`) REFERENCES `offres` (`offid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_produits_has_offres_produits1` FOREIGN KEY (`produit`) REFERENCES `produits` (`proid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `offre_detail_ibfk_1` FOREIGN KEY (`unite`) REFERENCES `unitemesure` (`uniid`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_produits_has_offres_produits1` FOREIGN KEY (`produit`) REFERENCES `produits` (`proid`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `produits`
