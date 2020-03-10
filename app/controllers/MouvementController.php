@@ -21,76 +21,17 @@ class MouvementController extends Controller
     public function __construct()
     {
         parent::__construct();
-//        die('je suis construction');
         $this->entrees = $this->Mouvement->all([], 'mvtid DESC');
-//        $this->sorties = $this->Commandedetail->all([], 'date DESC');
     }
 
     public function index()
     {
-//
-//        $this->layout->assign('produits', $this->Produit->all());
-//        $this->layout->assign('familles', $this->Famille->all());
         $this->layout->assign('entrees', $this->tableEntree());
         $this->layout->setTitle('Mouvement');
         $this->layout->setTitle('Mouvement', 'v');
         $this->layout->setJS('mouvement' . DS . 'index');
         $this->layout->setStyle('mouvement' . DS . 'mouvement');
         $this->layout->render('mouvement' . DS . 'index');
-    }
-
-    public function stock()
-    {
-        $html       = '';
-        $produits   = $this->Produit->all();
-        $prixtotaux = 0;
-        $prix = 0;
-
-        foreach ($produits as $produit) {
-            $stock = $this->stock_boutique_by_produit($produit->proid);
-            $prix = $stock;
-            $unite = '';
-
-            if ($stock > 0) {
-                if ($produit->uniabv !== 'aucun' && $produit->uniabv !== 'Aucun' && $produit->uniabv !== '') {
-                    $unite = $produit->uniabv;
-                }
-            }
-
-            if ($stock > $produit->proseuilalert) {
-                $status = '<span class="text-success" style="font-size: 12.5px;">disponible</span>';
-            }elseif ($stock > 0 && $stock <= $produit->proseuilalert){
-                $status = '<span class="text-warning" style="font-size: 12.5px;">en alert</span>';
-            }else {
-                $stock = '<span style="font-style: italic; font-size: 13px;">/</span>';
-                $status = '<span class="text-danger" style="font-size: 12.5px;">en rupture</span>';
-            }
-            $quantite = 0;
-            if (intval($this->stock_boutique_by_produit($produit->proid)) * 1 !== 0) {
-                $quantite = (intval($this->stock_boutique_by_produit($produit->proid)) * 1) * $produit->proprixUnitVente;
-            }
-
-            $quantite = number_format($quantite, 2, ',', ' ');
-            $html .= '<tr>' .
-                        '<td>' . $produit->proid . '</td>' .
-                        '<td>' . ucfirst($produit->prodesignation) . '</td>' .
-                        '<td>' . ucfirst($produit->famille) . '</td>' .
-                        '<td>' . $stock . ' ' . $unite . '</td>' .
-                        '<td>' . $quantite . '</td>' .
-                        '<td>' . $status . '</td>' .
-                     '</tr>';
-
-            $prixtotaux += $prix * $produit->proprixUnitVente;
-        }
-
-        $this->layout->assign('prixtotaux', number_format($prixtotaux, 2, ',', ' '));
-        $this->layout->assign('produits', $html);
-
-        $this->layout->setTitle('Stock mouvement', 'p');
-        $this->layout->setTitle('Stock mouvement');
-        $this->layout->setJS('mouvement' . DS . 'stock');
-        $this->layout->setStyle('mouvement' . DS . 'mouvement');
-        $this->layout->render('mouvement' . DS . 'stock');
     }
 
     public function entree()
@@ -140,8 +81,6 @@ class MouvementController extends Controller
     public function loadProduitForEntree()
     {
         $commandes = $this->Offre->getCommandeNotLivreted();
-//        var_dump($commandes);
-//        die();
         $this->layout->assign('commandes', $commandes);
         echo json_encode([
             'bodyModal' => $this->layout->ajax('mouvement' . DS . 'ajax' . DS . 'loadProduitForEntree')
@@ -468,30 +407,6 @@ class MouvementController extends Controller
                 'name' => ucfirst($entree->prodesignation),
                 'mouvement' => '<span class="text-success"><i class="fa fa-sign-out"></i>Entrée</span>',
                 'quantite' => '<span class="text-success"><i class="fa fa-plus" style="font-size: 10px;"></i>' . $entree->mvtquantite . '</span>',
-                'date' => $date,
-            ];
-        }
-        return $mouvements;
-    }
-
-    private function autoLoadSortie()
-    {
-        $sorties    = $this->sorties;
-        $mouvements = [];
-        $date       = '';
-
-        foreach ($sorties as $sortie) {
-            if (date('Y-m-d', strtotime($sortie->date)) === date('Y-m-d')) {
-                $date = date('H:i:s', strtotime($sortie->date));
-            } else {
-                $date = $sortie->date;
-            }
-
-            $mouvements [] = [
-                'id' => $sortie->proid,
-                'name' => ucfirst($sortie->prodesignation),
-                'mouvement' => '<span class="text-danger"><i class="fa fa-sign-out"></i>Sorite</span>',
-                'quantite' => '<span class="text-success"><i class="fa fa-plus" style="font-size: 10px;"></i>' . $sortie->quantite . '</span>',
                 'date' => $date,
             ];
         }
