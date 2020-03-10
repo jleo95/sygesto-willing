@@ -36,15 +36,6 @@ class MouvementController extends Controller
 
     public function entree()
     {
-//        $idOffre = 1;
-//        $commande = $this->Offre->get_by('off.offid', $idOffre);
-//        $commande_details = $this->Offredetail->show_produit_by_offre($idOffre);
-//        $commande = $this->Offre->get_by('off.offid', 1);
-//        var_dump($commande);
-//        var_dump($commande_details);
-////        die();
-//        unset($_SESSION['listOfNewLivraison']);
-//        unset($_SESSION['newMouvements']);
         if (!isset($_SESSION['newMouvements']))
             $_SESSION['newMouvements'] = [];
 

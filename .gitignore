@@ -3,5 +3,4 @@ assets/css/style.css
 assets/js/clients.js
 app/lib/tcpdf
 app/logs/*
-*.sql
 /vendor/
