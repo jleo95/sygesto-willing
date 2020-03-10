@@ -97,17 +97,11 @@ class ProduitController extends Controller
 
                 $produit = $this->Produit->get_by('proid', $this->Produit->lastInsert());
 
-                if ($this->stock_boutique_by_produit($produit->proid) == 0) {
-                    $stock = '<span style="font-style: italic; font-size: 12px;">rupture</span>';
-                } else {
-                    $stock = $this->stock_boutique_by_produit($produit->proid);
-                }
-
                 $produitHtml = [
                     'id' => $produit->proid,
                     'name' => $produit->prodesignation,
                     'family' => $produit->famille,
-                    'stockboutique' => $stock
+                    'stockboutique' => ''
                 ];
 
                 $response['produit']           = $produitHtml;
