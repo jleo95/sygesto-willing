@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 10 mars 2020 à 22:45
+-- Généré le :  mer. 11 mars 2020 à 19:44
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `connexions` (
   `deconnexion` varchar(255) NOT NULL,
   `user` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `connexions`
@@ -144,7 +144,10 @@ INSERT INTO `connexions` (`id`, `datedebut`, `ipsource`, `machinesource`, `conne
 (101, '2020-03-03 08:19:37', '127.0.0.1', 'DESKTOP-P44FHNR', 'Connexion réussi', '1970-01-01 01:00:00', 'Session expirée', 1),
 (102, '2020-03-05 16:17:51', '127.0.0.1', 'DESKTOP-P44FHNR', 'Session en cours', NULL, '', 1),
 (103, '2020-03-07 13:45:47', '127.0.0.1', 'DESKTOP-P44FHNR', 'Session en cours', NULL, '', 1),
-(104, '2020-03-10 14:48:25', '127.0.0.1', 'DESKTOP-P44FHNR', 'Session en cours', NULL, '', 1);
+(104, '2020-03-10 14:48:25', '127.0.0.1', 'DESKTOP-P44FHNR', 'Connexion réussi', '1970-01-01 01:00:00', 'Session expirée', 1),
+(105, '2020-03-11 11:25:37', '127.0.0.1', 'DESKTOP-P44FHNR', 'Session en cours', NULL, '', 1),
+(106, '2020-03-11 12:02:39', '127.0.0.1', 'DESKTOP-P44FHNR', 'Connexion réussi', '1970-01-01 01:00:00', 'Session expirée', 1),
+(107, '2020-03-11 14:52:23', '127.0.0.1', 'DESKTOP-P44FHNR', 'Session en cours', NULL, '', 1);
 
 -- --------------------------------------------------------
 
@@ -255,7 +258,7 @@ CREATE TABLE IF NOT EXISTS `groupemenu` (
 
 INSERT INTO `groupemenu` (`grpid`, `grplibelle`, `grpicone`, `url`, `grporder`) VALUES
 (1, 'Produit', '<i class=\"fa fa-book\"></i> ', 'produit', 1),
-(2, 'Commande produits', '<i class=\"fa fa-shopping-basket\"></i>', 'achat', 3),
+(2, 'Commande produits', '<i class=\"fa fa-shopping-basket\"></i>', 'commande', 3),
 (3, 'Livraison', '<i class=\"fa fa-cart-arrow-down\"></i> ', 'vente', 2),
 (4, 'Stock', '<i class=\"fa fa-database\"></i>', 'stock', 4),
 (5, 'Statistique', '<i class=\"fa fa-pie-chart\"></i>', 'statistique', 8),
@@ -407,18 +410,14 @@ CREATE TABLE IF NOT EXISTS `offres` (
   PRIMARY KEY (`offid`),
   KEY `fk_offre_payement1_idx` (`offpaiement`),
   KEY `fk_offre_user1_idx` (`offrealiserpar`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `offres`
 --
 
 INSERT INTO `offres` (`offid`, `offdate`, `offdateLivraison`, `offdescription`, `offvalidite`, `offpaiement`, `offrealiserpar`, `offshore`) VALUES
-(5, '2020-03-10 22:25:00', '2020-03-10 21:25:28', NULL, 0, 1, 1, 1),
-(6, '2020-03-10 22:37:00', '2020-03-10 21:37:03', NULL, 0, 1, 1, 1),
-(7, '2020-03-10 22:37:00', '2020-03-10 21:37:57', NULL, 0, 1, 1, 1),
-(8, '2020-03-10 22:40:00', '2020-03-10 21:40:55', NULL, 0, 2, 1, 1),
-(9, '2020-03-11 00:00:00', '2020-03-10 21:41:37', NULL, 0, 2, 1, 1);
+(1, '2020-03-11 17:43:00', '2020-03-11 16:43:54', NULL, 0, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -442,14 +441,10 @@ CREATE TABLE IF NOT EXISTS `offre_detail` (
 --
 
 INSERT INTO `offre_detail` (`produit`, `offre`, `quantite`, `description`) VALUES
-(63, 5, 100, NULL),
-(63, 6, 10000, NULL),
-(63, 8, 14, NULL),
-(64, 5, 7000, NULL),
-(65, 9, 14777, NULL),
-(67, 5, 15, NULL),
-(67, 6, 1477, NULL),
-(71, 5, 50000, NULL);
+(62, 1, 1122550, NULL),
+(63, 1, 1000, NULL),
+(65, 1, 14555, NULL),
+(69, 1, 144441, NULL);
 
 -- --------------------------------------------------------
 
@@ -514,6 +509,7 @@ CREATE TABLE IF NOT EXISTS `produits` (
   `prodesignation` varchar(150) NOT NULL,
   `proreference` text,
   `datecreation` date DEFAULT NULL,
+  `prounite` int(11) NOT NULL DEFAULT '1',
   `profamille` int(11) NOT NULL,
   `pronbproduitBlog` float DEFAULT NULL COMMENT 'd''un nombre d''un produit que peut contenir son blog, par exemple le nombre de boite de sandrine dans son carton, le nombre de kilo de riz pour un sac de riz, le nombre de bouteille dans une plalette',
   `prounitemessure` int(11) DEFAULT NULL,
@@ -524,26 +520,27 @@ CREATE TABLE IF NOT EXISTS `produits` (
   PRIMARY KEY (`proid`),
   KEY `fk_produits_unitemesure1_idx` (`prounitemessure`),
   KEY `profamille` (`profamille`),
-  KEY `prorealiserpar` (`prorealiserpar`)
+  KEY `prorealiserpar` (`prorealiserpar`),
+  KEY `prounite` (`prounite`)
 ) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `produits`
 --
 
-INSERT INTO `produits` (`proid`, `prodesignation`, `proreference`, `datecreation`, `profamille`, `pronbproduitBlog`, `prounitemessure`, `proseuilalert`, `profournisseur`, `prorealiserpar`, `prodatecreation`) VALUES
-(60, 'Btle Tangui', NULL, NULL, 7, 1, 2, 2, 12, 1, '2020-02-27 15:21:46'),
-(61, 'Btle Tangui', NULL, NULL, 7, 1, 2, 2, 12, 1, '2020-02-27 15:25:43'),
-(62, 'Btle Tangui', NULL, NULL, 7, 1, 1, 2, 12, 1, '2020-02-27 15:27:30'),
-(63, 'test', NULL, NULL, 5, 1, 2, 15, 11, 1, '2020-02-27 15:39:48'),
-(64, 'Btle Tangui', NULL, NULL, 5, 55, 1, 15, 12, 1, '2020-02-27 15:58:25'),
-(65, 'Cable Electrique ', NULL, NULL, 5, 25, 1, 15, 11, 1, '2020-02-28 09:43:41'),
-(66, 'Cable Electrique ', NULL, NULL, 5, 25, 1, 15, 11, 1, '2020-02-28 09:43:52'),
-(67, 'Cable Electrique ', NULL, NULL, 5, 25, 1, 15, 11, 1, '2020-02-28 09:46:50'),
-(68, 'Cable Electrique ', NULL, NULL, 6, 25, 2, 15, 11, 1, '2020-02-28 09:47:31'),
-(69, 'Cable Electrique ', NULL, NULL, 6, 25, 1, 15, 12, 1, '2020-03-10 16:53:58'),
-(70, 'Cable Electrique ', NULL, NULL, 6, 25, 1, 15, 12, 1, '2020-03-10 16:54:20'),
-(71, 'Cable Electrique ', NULL, NULL, 6, 25, 1, 15, 12, 1, '2020-03-10 16:55:59');
+INSERT INTO `produits` (`proid`, `prodesignation`, `proreference`, `datecreation`, `prounite`, `profamille`, `pronbproduitBlog`, `prounitemessure`, `proseuilalert`, `profournisseur`, `prorealiserpar`, `prodatecreation`) VALUES
+(60, 'Btle Tangui', NULL, NULL, 1, 7, 1, 2, 2, 12, 1, '2020-02-27 15:21:46'),
+(61, 'Btle Tangui', NULL, NULL, 1, 7, 1, 2, 2, 12, 1, '2020-02-27 15:25:43'),
+(62, 'Btle Tangui', NULL, NULL, 1, 7, 1, 1, 2, 12, 1, '2020-02-27 15:27:30'),
+(63, 'test', NULL, NULL, 1, 5, 1, 2, 15, 11, 1, '2020-02-27 15:39:48'),
+(64, 'Btle Tangui', NULL, NULL, 1, 5, 55, 1, 15, 12, 1, '2020-02-27 15:58:25'),
+(65, 'Cable Electrique ', NULL, NULL, 1, 5, 25, 1, 15, 11, 1, '2020-02-28 09:43:41'),
+(66, 'Cable Electrique ', NULL, NULL, 1, 5, 25, 1, 15, 11, 1, '2020-02-28 09:43:52'),
+(67, 'Cable Electrique ', NULL, NULL, 1, 5, 25, 1, 15, 11, 1, '2020-02-28 09:46:50'),
+(68, 'Cable Electrique ', NULL, NULL, 1, 6, 25, 2, 15, 11, 1, '2020-02-28 09:47:31'),
+(69, 'Cable Electrique ', NULL, NULL, 1, 6, 25, 1, 15, 12, 1, '2020-03-10 16:53:58'),
+(70, 'Cable Electrique ', NULL, NULL, 1, 6, 25, 1, 15, 12, 1, '2020-03-10 16:54:20'),
+(71, 'Cable Electrique ', NULL, NULL, 1, 6, 25, 1, 15, 12, 1, '2020-03-10 16:55:59');
 
 -- --------------------------------------------------------
 
@@ -663,7 +660,8 @@ ALTER TABLE `offre_detail`
 --
 ALTER TABLE `produits`
   ADD CONSTRAINT `fk_produit_famille1` FOREIGN KEY (`profamille`) REFERENCES `familles` (`famid`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_produits_unitemesure1` FOREIGN KEY (`prounitemessure`) REFERENCES `unitemesure` (`uniid`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_produits_unitemesure1` FOREIGN KEY (`prounitemessure`) REFERENCES `unitemesure` (`uniid`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `produits_ibfk_1` FOREIGN KEY (`prounite`) REFERENCES `unitemesure` (`uniid`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `users`
