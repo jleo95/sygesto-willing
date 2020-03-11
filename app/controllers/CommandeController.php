@@ -135,9 +135,83 @@ class CommandeController extends Controller
     }
 
 
-    public function void()
+    public function voir($id)
     {
-        echo 'voire';
+//        $groupByFamille = $this->Offredetail->show_produit_by_offre_groupBy_famille($id);
+        $details = $this->Offredetail->show_offre_detail_by_offre($id);
+        $groupByfamille = [];
+
+        foreach ($details as $detail) {
+            foreach ($details as $d) {
+                if ($detail->famille_id == $d->famille_id) {
+                    $groupByfamille[$detail->famille][] = $d;
+                }
+            }
+        }
+        $commande = $this->Offre->get_by($nameFields = 'off.offid', $value = intval($id));
+        $this->layout->assign('commande', $commande);
+        $this->layout->assign('groupByfamille', $groupByfamille);
+        $this->layout->setTitle('Voir Commande');
+        $this->layout->setTitle('Demande d\'achat #' . $id, 'v');
+        $this->layout->render('commande' . DS . 'voir');
+    }
+
+    #imprimer une commande
+    public function imprimer($id)
+    {
+        $pdf       = new \App\Core\PDF();
+
+        $details = $this->Offredetail->show_offre_detail_by_offre($id);
+        $groupByfamille = [];
+
+        foreach ($details as $detail) {
+            foreach ($details as $d) {
+                if ($detail->famille_id == $d->famille_id) {
+                    $groupByfamille[$detail->famille][] = $d;
+                }
+            }
+        }
+
+
+        $table = '<table class="table table-striped table-responsive table-bordered" border="1" cellspacing="0" cellpadding="3">' .
+                '<tr>' .
+                    '<th>Produit</th>' .
+                    '<th>Designation</th>' .
+                    '<th>Quantité</th>' .
+                    '<th>Unité</th>' .
+                '</tr>';
+
+        foreach ($groupByfamille as $k => $item) {
+            $j = 1;
+            $table .= '<tr>';
+            if (count($item) > 1)
+                $table .= '<td rowspan="' . count($item) . '">' . $k . '</td>';
+            else
+                $table .= '<td>' . $k . '</td>';
+            foreach ($item as $d) {
+                $table .= '<td>' . $d->produit . '</td>' .
+                    '<td>' . $d->quantite . '</td>' .
+                    '<td>' . $d->unite . '</td>';
+                if (count($item) > 1){
+                    if ($j < count($item)) {
+                        $table .= '</tr><tr>';
+                    }else{
+                        $table .= '</tr>';
+                    }
+                }
+                $j ++;
+            }
+            $table .= '</tr>';
+        }
+
+        $table .= '</table>';
+
+        $commande = $this->Offre->get_by($nameFields = 'off.offid', $value = intval($id));
+        $this->layout->assign('commande', $commande);
+        $this->layout->assign('groupByfamille', $groupByfamille);
+        $this->layout->assign('table', $table);
+        $this->layout->assign('pdf', $pdf);
+        $this->layout->render('commande' . DS . 'impression' . DS . 'commande', TRUE);
     }
 
 

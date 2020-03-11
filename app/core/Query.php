@@ -24,6 +24,8 @@ class Query
 
     private $joins;
 
+    private $groupe;
+
     protected $params;
 
     public function from(string $table, ?string $alias = null): self
@@ -72,6 +74,12 @@ class Query
         return $this;
     }
 
+    public function groupeBy(?string $column): self
+    {
+        $this->groupe = $column;
+        return $this;
+    }
+
     public function __toString()
     {
         $part = ['SELECT'];
@@ -103,6 +111,11 @@ class Query
         if ($this->limit) {
             $part[] = 'LIMIT';
             $part[] = $this->limit;
+        }
+
+        if ($this->groupe) {
+            $part[] = 'GROUP BY';
+            $part[] = $this->groupe;
         }
         return join(' ', $part);
     }

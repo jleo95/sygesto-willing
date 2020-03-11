@@ -41,8 +41,8 @@
                         <input type="hidden" name="hiddenIdcommande" id="hiddenIdcommande">
                         <table id="commande-table" class="table table-responsive table-bordered">
                             <thead>
-                                <th>#</th>
-                                <th data-field="num">Num commande</th>
+                                <th data-field="line">#</th>
+                                <th data-field="id">Num commande</th>
                                 <th data-field="contact">Offshore</th>
                                 <th data-field="date">Date</th>
                                 <th data-field="actions" data-formatter="operateFormatter" data-events="operateEvents">Actions</th>

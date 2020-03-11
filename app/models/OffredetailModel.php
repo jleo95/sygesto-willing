@@ -74,6 +74,29 @@ class OffredetailModel extends Model
         return $this->execute($query, [$idOffre]);
     }
 
+    public function show_produit_by_offre_groupBy_famille($idOffre)
+    {
+        $query = $this->makeQuery()
+            ->select('produit as produit_id', 'p.prodesignation produit', 'quantite', 'un.uniid as unite_id, un.unilibelle unite', 'f.famid as famille_id', 'f.famlibelle as famille')
+            ->join('produits as p', $this->table . '.produit = proid')
+            ->join('unitemesure as un', 'p.prounite = un.uniid')
+            ->join('familles as f', 'f.famid = p.profamille')
+            ->groupeBy('famille')
+            ->where('offre = ?');
+        return $this->execute($query, [$idOffre]);
+    }
+
+    public function show_offre_detail_by_offre($idOffre)
+    {
+        $query = $this->makeQuery()
+            ->select('produit as produit_id', 'p.prodesignation produit', 'quantite', 'un.uniid as unite_id, un.unilibelle unite', 'f.famid as famille_id', 'f.famlibelle as famille')
+            ->join('produits as p', $this->table . '.produit = proid')
+            ->join('unitemesure as un', 'p.prounite = un.uniid')
+            ->join('familles as f', 'f.famid = p.profamille')
+            ->where('offre = ?');
+        return $this->execute($query, [$idOffre]);
+    }
+
     public function get_by_periode($start = '', $end = '')
     {
         if (empty($start)) {

@@ -19,7 +19,7 @@ class Router
      */
     private $url;
 
-    private $routes;
+    private $routes = [];
 
     private $nameRoutes = [];
 

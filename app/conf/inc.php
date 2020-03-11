@@ -184,6 +184,9 @@ $router->post('commande/ajout', 'commande#ajout');
 $router->get('commande/selectproduit', 'commande#selectproduit');
 $router->post('commande/addProduitToCommande', 'commande#addProduitToCommande');
 $router->post('commande/deletProduitFromCommande', 'commande#deletProduitFromCommande');
+$router->get('commande/voir/:id', 'commande#voir');
+$router->get('commande/imprimer/:id', 'commande#imprimer');
+
 
 /**
  * run app

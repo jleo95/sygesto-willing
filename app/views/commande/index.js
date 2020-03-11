@@ -35,53 +35,14 @@ $().ready(function() {
 
 window.operateEvents = {
     'click .more-infos': function (e, value, row, index) {
-        laodForShowCommande (row.num);
-    },
-    'click .edit-offre': function (e, value, row, index) {
-        rowProduit = row;
-        valueProduit = value;
-        indexProduit = index;
-        actionEven = e;
-        $.ajax({
-            url: 'achat/loadForEdit',
-            type: 'post',
-            dataType: 'json',
-            data: {idOffre: row.num},
-            success: function (data) {
-                $('#editOffre .modal-body').html(data.bodyModal);
-                $('#editOffre').modal('show');
-            },
-            error: function (xhr) {
-                alert('Une erreur s\'est produite. Veillez ressayer plutard');
-            }
-        })
-    },
-    'click .remove-produit': function (e, value, row, index) {
-        rowProduit = row;
-        valueProduit = value;
-        indexProduit = index;
-        actionEven = e;
-        $.ajax({
-            url: 'produit/laodDataForDeleteProduit',
-            type: 'post',
-            dataType: 'json',
-            data: {idProduit: row.id},
-            success: function (data) {
-                nameProduit = data.nameProduit;
-                $('#deletProuit .modal-body').html(data.modalBody);
-                $('#deletProuit .modal-content .modal-header h4').html('Suppression');
-                $('#deletProuit').modal('show');
-            },
-            error: function (xhr) {
-                alert('Erreur de chargement');
-            }
-        });
+        //code
     }
-
 };
 function operateFormatter(value, row, index) {
+    uri = row.id;
+    id = uri.split('#');
     return [
-        '<a rel="tooltip" title="Voir plus" class="table-action more-infos text-primary" href="commande/voir/{{row.id}}}">',
+        '<a rel="tooltip" title="Voir plus" class="table-action more-infos text-primary" href="commande/voir/' + id[1] + '">',
         '<i class="fa fa-eye"></i>',
         '</a>',
         // '<a rel="tooltip" title="Editer commande" class="table-action edit-offre text-success" href="javascript:void(0)">',
