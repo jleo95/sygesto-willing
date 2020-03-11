@@ -123,7 +123,7 @@ function loadProduitOffre() {
             $('#addProduitOffre .modal-body').html(data.bodyModal);
         },
         error: function (xhr) {
-            alert('Erreur de chargement. Veillez réessayer plutard');
+            alert('Erreur de chargement. Veillez réessayer plutard ici');
         }
     })
 }
