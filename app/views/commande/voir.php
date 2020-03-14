@@ -2,6 +2,7 @@
 
     <?php
 //    var_dump($commande);
+
     $date = new \App\Core\DateFR($commande->offdate);
     ?>
 
@@ -30,7 +31,7 @@
         <div class="commande-detail">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
-                    <table class="table table-striped table-responsive table-bordered">
+                    <table class="table table-responsive table-bordered">
                         <thead>
                         <th>Produit</th>
                         <th>Designation</th>
@@ -38,11 +39,25 @@
                         <th>Unité</th>
                         </thead>
                         <tbody>
-                        <?php foreach ($groupByfamille as $k => $item) {
+                        <?php
+                        $class = '';
+                        $classIt = 0;
+                        $colors = $argColors;
+                        shuffle($argColors);
+                        $lenthColors = count($argColors) - 1;
+                        foreach ($groupByfamille as $k => $item) {
+                            if (empty($colors)){
+                                $colors = $argColors;
+                                $lenthColors = count($colors) - 1;
+                            }
+                            $index = random_int(0, $lenthColors);
+                            $lenthColors --;
+                            //$indexColors = $colors[$index];
+                            unset($colors[$index]);
                             $j = 1;
                             ?>
-                            <tr class="change-color">
-                                <td rowspan="<?php echo count($item); ?>"><?php echo $k ?></td>
+                            <tr >
+                                <td class="<?php echo $class ?>" rowspan="<?php echo count($item); ?>" style="background: <?php //echo $indexColors ?>;"><?php echo $k ?></td>
                                 <?php foreach ($item as $i) {
                                     ?>
                                     <td><?php echo $i->produit; ?></td>
@@ -57,10 +72,17 @@
 
                                     $j ++;
                                 }
+                                if ($classIt % 2 == 0)
+                                    $class = 'change-color';
+                                else
+                                    $class = '';
+
+                                $classIt ++;
                                 ?>
                             </tr>
 
                         <?php
+
                         }
                         ?>
                         </tbody>
@@ -87,7 +109,7 @@
         font-weight: 700;
         text-decoration: underline;
     }
-    table tr.change-color:nth-child(2n) {
+    table tr td.change-color{
         background: #efefef;
     }
     .commande-detail {

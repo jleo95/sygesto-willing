@@ -148,8 +148,24 @@ class CommandeController extends Controller
                 }
             }
         }
+
+        $argColors = [
+            '#efefefe',
+            '#FFA07A',
+            '#CD5C5C',
+            '#FF7F50',
+            '#FFA500',
+            '#FFFACD',
+            '#BDB76B',
+            '#32CD32',
+            '#008000',
+            '#3CB371',
+            '#AFEEEE'
+        ];
+
         $commande = $this->Offre->get_by($nameFields = 'off.offid', $value = intval($id));
         $this->layout->assign('commande', $commande);
+        $this->layout->assign('argColors', $argColors);
         $this->layout->assign('groupByfamille', $groupByfamille);
         $this->layout->setTitle('Voir Commande');
         $this->layout->setTitle('Demande d\'achat #' . $id, 'v');
@@ -183,9 +199,10 @@ class CommandeController extends Controller
 
         foreach ($groupByfamille as $k => $item) {
             $j = 1;
+            $itemLen = count($item);
             $table .= '<tr>';
-            if (count($item) > 1)
-                $table .= '<td rowspan="' . count($item) . '">' . $k . '</td>';
+            if ($itemLen > 1)
+                $table .= '<td rowspan="' . $itemLen . '">' . $k . '</td>';
             else
                 $table .= '<td>' . $k . '</td>';
             foreach ($item as $d) {
