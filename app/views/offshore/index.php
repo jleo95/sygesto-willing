@@ -30,7 +30,7 @@
                     <div class="form-group">
 
                         <br>
-                        <a href="produit/imprimer" class="btn btn-default text-primary" target="_blank" style="font-size: 22px;" title="imprimer liste des produits"><i class="fa fa-print"></i></a>
+                        <a href="offshore/imprimer" class="btn btn-default text-primary" target="_blank" style="font-size: 22px;" title="imprimer liste des produits"><i class="fa fa-print"></i></a>
                     </div>
 
                 </div>
@@ -127,7 +127,7 @@
             </div>
         </div>
 
-        <div class="modal" id="addProuit">
+        <div class="modal" id="addOffshore">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -138,113 +138,15 @@
                         <div class="container-form-AddProduit">
                             <div class="errorAdd"></div>
                             <form action="" method="post" id="formAddProduit">
-                                <div class="form-group">
-                                    <span class="fa fa-check"></span>
-                                    <label for="designAddProduit">Designation</label>
-                                    <input type="text" name="designAddProduit" id="designAddProduit" value="Savon azure" class="form-control" placeholder="nom du produit" required>
-                                    <span class="help-block"></span>
-                                </div>
+                               
+                               
 
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="prixachatAddProduit">Responsable</label>
-                                            <input type="number" name="prixachatAddProduit" id="prixachatAddProduit" value="450" class="form-control" placeholder="prix unitaire d'achat" required>
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="form-group">
-                                            <label for="fournisseurAddProduit">Date debut</label>
-                                            <select name="fournisseurAddProduit" id="fournisseurAddProduit" class="form-control">
-                                                <!--                                                <option value="">Fournisseurs</option>-->
-                                                <?php foreach ($fournisseurs as $f) : ?>
-                                                    <option value="<?php echo $f->fouid; ?>"><?php echo ucfirst($f->founom) . ' ' . ucfirst($f->fouprenom) ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
+                                    
+                                    
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="prixUnitVenteAddProduit">Prix unitaire de vente</label>
-                                            <input type="number" name="prixUnitVenteAddProduit" value="500" id="prixUnitVenteAddProduit" class="form-control" placeholder="prix unitaire de vente" required>
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="prixGlobVenteAddProduit">Prix de vente global</label>
-                                            <input type="number" name="prixGlobVenteAddProduit" id="prixGlobVenteAddProduit" class="form-control" placeholder="prix de vente globale">
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="nbblogAddProduit">Nbre de produit par blog</label>
-                                            <input type="text" name="nbblogAddProduit" value="50" id="nbblogAddProduit" class="form-control" placeholder="nombre de produit par blog">
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-10">
-                                        <div class="form-group">
-                                            <label for="peremptionAddProduit">Date de peremption</label>
-                                            <input type="text" name="peremptionAddProduit" id="peremptionAddProduit" class="form-control" placeholder="le date d'expiration d'un produit" required>
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group">
-                            <label for="clientVente">Client: </label>
-                            
-                        </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="familleAddProduit">Client</label>
-                                            <select name="clientOffshore" id="clientOffshore" class="form-control">
-                                            <?php foreach ($clients as $client) {
-                                            ?>
-                                                <option value="<?php echo $client->cliid; ?>"><?php echo ucfirst($client->clinom) . ' ' . ucfirst($client->cliprenom) ?></option>
-                                                <?php
-                                                }
-                                                ?>
-                                            </select>
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="uniteAddProduit">Unité de mesure</label>
-                                            <select name="uniteAddProduit" id="uniteAddProduit" class="form-control" required>
-                                                <!--                                                <option value="">Unité de mesure</option>-->
-                                                <?php foreach ($unites as $unite) : ?>
-                                                    <option value="<?php echo $unite->uniid; ?>"><?php echo $unite->unilibelle ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="seuilAddProduit">Seuil d'alerte (stock)</label>
-                                            <input type="text" name="seuilAddProduit" id="seuilAddProduit" value="5" class="form-control" placeholder="par exemple 5">
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
-                                </div>
+                                
 
                                 <div class="clear">
                                     <div class="btn-group right">

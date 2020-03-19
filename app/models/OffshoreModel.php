@@ -28,6 +28,7 @@ class OffshoreModel extends Model {
         $fields = explode(',', 'offid, offdescription, offresponsable, offdatedebut, offdatefin, offclient');
         return parent::findAllQuery($fields, $orderBy)
                 ->join('clients', 'offclient = cliid')
+                ->join('employes', 'offresponsable = empid')
              ;
     }
 

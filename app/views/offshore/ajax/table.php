@@ -8,13 +8,14 @@
 ?>
 
 <?php
-foreach ($offshore as $offshores) {
+var_dump($offshores);
+foreach ($offshores as $offshore) {
 //    if (calculDate($produit->prodatePeremption) > 0)
     ?>
     <tr>
-        <td><?php  echo $offshore->offid ?></td>
-        <td><?php //echo $produit->prodesignation; ?></td>
-        <td><?php //echo $produit->famille ?></td>
+        <td><?php  ?></td>
+        <td><?php  echo $offshore->offdescrition; ?></td>
+        <td><?php //echo $offshores->famille ?></td>
         <td><span style="font-style: italic;"><?php //echo number_format($produit->proprixUnitVente, 2, ',', ' ')?></span></td>
         <td><span style="font-style: italic;"><?php //echo number_format($produit->proprixblogVente, 2, ',', ' ') ?></span></td>
         <td><?php //if ($stock_function->stock_boutique_by_produit($produit->proid) == 0) { ?>

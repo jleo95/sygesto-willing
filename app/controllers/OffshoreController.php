@@ -30,41 +30,16 @@ class OffshoreController extends Controller
 
     public function index()
     {
-        if ($_POST) {
-            $data = [];
-            $error = [];
-
-            if (isset($this->input->designAddOffshore) AND !empty($this->input->designAddOffshore)) {
-                $data ['offdescription'] = $this->input->designAddOffshore;
-            }else {
-                $error ['danger']['offdescription'] = true;
-            }
-
-           
-
-            
-            if (empty($error)) {
-                $this->Offshore->insert($data);
-                $this->layout->assign('success', true);
-//                die('cool');
-            }else {
-                var_dump($error);
-                die('il y\'a une erreur');
-            }
-        }
+        
         $this->layout->setTitle('offshores');
-        $this->layout->setTitle('Liste de tous les offshores', 'v');
+        $this->layout->setTitle('Liste des offshores', 'v');
         $this->layout->assign('offshore', $this->Offshore->all([], 'offid DESC'));
-        $this->layout->assign('clients', $this->Client->all());
-
-       // $this->layout->assign('fournisseurs', $this->Fournisseur->all());
-        //$this->layout->assign('client', $this->Client->all());
-        //$this->layout->assign('familles', $this->Famille->all());
-        //$this->layout->assign('mouvement', $this->Mouvement);
+        $this->layout->assign('employes', $this->Employe->all());
         $this->layout->assign('tbodyOffshore', $this->loadTable());
         $this->layout->setJS('offshore' . DS . 'index');
         $this->layout->setStyle('offshore' . DS . 'offshore');
         $this->layout->render('offshore' . DS . 'index');
+        
         
     }
 
@@ -74,28 +49,54 @@ class OffshoreController extends Controller
         $data = [];
         $error = [];
 
-        if (isset($this->input->designAddOffshore) AND !empty($this->input->designAddOffshore)) {
-            $data ['offdescription'] = $this->input->designAddOffshore;
+        if (isset($this->input->descriptionAddOffshore) AND !empty($this->input->descriptionAddOffshore)) {
+            $data ['offdescription'] = $this->input->descriptionAddOffshore;
         }else {
             $error ['danger']['description'] = true;
         }
 
        
-        if (isset($this->input->respoAddOffshore) AND !empty($this->input->respoAddOffshore)) {
-            $data ['offresposable'] = $this->input->respoAddOffshore;
+        if (isset($this->input->responsableAddOffshore) AND !empty($this->input->responsableAddOffshore)) {
+            $data ['offresposable'] = $this->input->responsableAddOffshore;
         }
 
         else {
-            $error ['danger']['offresposable'] = true;
+            $error ['danger']['responsable'] = true;
+        }
+       
+
+        if (isset($this->input->clientAddOffshore) AND !empty($this->input->clientAddOffshore)) {
+            $data ['offclient'] = $this->input->clientAddOffshore;
         }
 
-        
+        else {
+            $error ['danger']['client'] = true;
+        }
+
+       
+        if (isset($this->input->dateFinAddOffshore) AND !empty($this->input->dateFinAddOffshore)) {
+            $data ['offdatefin'] = $this->input->dateFinAddOffshore;
+        }
+
+        else {
+            $error ['danger']['datefin'] = true;
+        }
+
+       
+        if (isset($this->input->dateDebutAddOffshore) AND !empty($this->input->dateDebutAddOffshore)) {
+            $data ['offdatedebut'] = $this->input->dateDebutAddOffshore;
+        }
+
+        else {
+            $error ['danger']['datedebut'] = true;
+        }
+
 
         $response = [];
 
 
         if (empty($error)) {
-            $data['prodatecreation'] = date('Y-m-d H:i:s', time());
+            $data['offdatecreation'] = date('Y-m-d H:i:s', time());
             $data['prorealiserpar'] = $this->session->stkiduser;
             if ($this->Offshore->insert($data)) {
 
@@ -126,18 +127,20 @@ class OffshoreController extends Controller
             $response ['error'] = 1;
             $response ['mssge'] = '<div class="alert alert-danger alert-dismissable">' .
                 '<button type="button" class="close" data-dismiss="alert">&times;</button>' .
-                '<stron>Attention !</stron> Veillez verifier les infos entrés' .
+                '<stron>Attention !</stron> Veillez vérifier les informations entrées' .
                 '</div>';
         }
 
         echo json_encode($response);
 
-    }
 
+    }
+    
     #chargement de donnee pour l'ajout
     public function loadAdd()
     {
         $this->layout->assign('fournisseurs', $this->Fournisseur->all());
+        $this->layout->assign('employes', $this->Employe->all());
         $this->layout->assign('clients', $this->Client->all());
         $this->layout->assign('unites', $this->Unite->all());
         $this->layout->assign('familles', $this->Famille->all());
