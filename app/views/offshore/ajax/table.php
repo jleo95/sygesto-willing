@@ -8,7 +8,7 @@
 ?>
 
 <?php
-//var_dump($offshore);
+// var_dump($offshore);
 foreach ($offshore as $offshores) {
 //    if (calculDate($produit->prodatePeremption) > 0)
     ?>
@@ -35,6 +35,7 @@ foreach ($offshore as $offshores) {
 
             
         </td>
+        <td></td>
         <td></td>
     </tr>
 

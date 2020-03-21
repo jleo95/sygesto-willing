@@ -1,8 +1,6 @@
 $(document).ready(function (e) {
-    $('#peremptionAddProduit').pickadate({
-        formatSubmit: 'yyyy-mm-dd'
-    });
-
+    
+alert("test ok")
     $('#formAddProduit').submit(function (e) {
         e.preventDefault();
 
@@ -110,7 +108,7 @@ $(document).ready(function (e) {
 
 });
 
-var $table = $('#produit-table'),
+var $table = $('#offshore-table'),
     $alertBtn = $('#alertBtn'),
     rowProduit = null,
     valueProduit = null,

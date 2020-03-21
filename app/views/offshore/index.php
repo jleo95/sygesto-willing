@@ -47,7 +47,7 @@
                         </div>
 
                         <input type="hidden" name="hiddenIdProduit" id="hiddenIdProduit">
-                        <table id="produit-table" class="table table-responsive table-bordered">
+                        <table id="offshore-table" class="table table-responsive table-bordered">
                             <thead>
                             <th data-field="id" data-sortable="true">Ref.</th>
                             <!--                    <th data-field="id" data-sortable="false">ID</th>-->
