@@ -2,29 +2,38 @@
     <div class="table-offre">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-10 col-md-offset-1">
-                    <?php if (!isset($_SESSION['process']) || !$_SESSION['process']): ?>
+                <div class="col-md-12">
+                    <?php if (!isset($_SESSION['processLivraison']) || !$_SESSION['processLivraison']): ?>
                         <div class="scrollbar-deep-purple" style="overflow-y: auto; max-height: 380px; border: 1px solid #ddd;">
                             <table class="table">
                                 <thead>
-                                <th>#</th>
-                                <th>Designation</th>
-                                <th>Famille</th>
-                                <th>Unite</th>
-                                <th>Quantité</th>
-                                <th></th>
+                                    <th data-field="line">#</th>
+                                    <th data-field="offshore">Offshore</th>
+                                    <th data-field="dateoffshore">Dte fin offshore</th>
+                                    <th data-field="cmd">Num commande</th>
+                                    <th data-field="datecmd">Date cmd</th>
+                                    <th data-field="produit">Produit</th>
+                                    <th data-field="qte">Qté livriée</th>
+                                    <th data-field="qte2">Qté restante</th>
+                                    <th data-field="unite">Unité</th>
+                                    <th data-field=""></th>
                                 </thead>
                                 <tbody id="tbodyProduitsCommande">
-                                <?php if (isset($_SESSION['listProduitInCommnade']) AND !empty($_SESSION['listProduitInCommnade'])) :
+                                <?php if (isset($_SESSION['listProduitInLivraison']) AND !empty($_SESSION['listProduitInLivraison'])) :
                                     $i = 1;
-                                    foreach ($_SESSION['listProduitInCommnade'] as $produit):
+                                    $date = new \App\Core\DateFR();
+                                    foreach ($_SESSION['listProduitInLivraison'] as $produit):
                                         ?>
                                         <tr>
                                             <td><?php echo $i;?></td>
+                                            <td><?php echo '#' . $produit['offshore_id'];?></td>
+                                            <td><?php $date->setSource($produit['offshore_fin']); echo $date->getDate() . ' ' . $date->getMois() . ' ' . $date->getYear();?></td>
+                                            <td><?php echo '#' . $produit['offre'];?></td>
+                                            <td><?php $date->setSource($produit['offre_date']); echo $date->getDate() . ' ' . $date->getMois() . ' ' . $date->getYear();?></td>
                                             <td><?php echo $produit['produit'];?></td>
-                                            <td><?php echo $produit['famille'];?></td>
+                                            <td><?php echo $produit['quantite_livree'];?></td>
+                                            <td><?php echo $produit['quantite_restante'];?></td>
                                             <td><?php echo $produit['unite'];?></td>
-                                            <td><?php echo $produit['quantite'];?></td>
                                             <td><a href="javascript: void(0);" onclick="deletProduitFromCommande(<?php echo $i ++ ?>)" class="text-danger"><i class="fa fa-remove"></i></a></td>
                                         </tr>
                                     <?php
@@ -39,9 +48,9 @@
                             </div>
                         </div>
                         <div style="text-align: center; padding: 10px;">
-                            <a href="commande/selectproduit" class="btn btn-success">Ajouter un produit</a>
-                            <?php if (isset($_SESSION['listProduitInCommnade']) && !empty($_SESSION['listProduitInCommnade'])): ?>
-                                <a href="javascript: void(0);" class="btn btn-primary" onclick="addProduitToCommande()">Terminer <i class="fa fa-arrow-right"></i></a>
+                            <a href="livraison/selectproduit" class="btn btn-success">Ajouter un produit</a>
+                            <?php if (isset($_SESSION['listProduitInLivraison']) && !empty($_SESSION['listProduitInLivraison'])): ?>
+                                <a href="javascript: void(0);" class="btn btn-primary" onclick="addProduitToLivraisonEndProcess()">Terminer <i class="fa fa-arrow-right"></i></a>
                             <?php endif; ?>
                         </div>
                     <?php else: ?>
@@ -58,7 +67,7 @@
                                         </select>
                                         <?php if (isset($error['offshore'])) {?>
                                             <span class="text-danger">Veillez choisir un offshore</span>
-                                        <?php
+                                            <?php
                                         }
                                         ?>
                                         <br>
@@ -102,28 +111,26 @@
     </div>
 </div>
 
+<?php if (isset($_SESSION['successAddLivraison']) && $_SESSION['successAddLivraison'] == true) :?>
+    <script !src="">
+        $.gritter.add({
+            title: 'Succès',
+            text: 'Produit ajoute dans la liste de livraison',
+            image: 'assets/img/confirm.png'
+        });
+    </script>
+    <?php
+    unset($_SESSION['successAddLivraison'] );
+endif;
+?>
+
+
 <script !src="">
     function deletProduitFromCommande(line) {
-        if (confirm('Voulez vous supprimer le produit de l\'ajout')) {
-            $.ajax({
-                method: "post",
-                url: "commande/deletProduitFromCommande",
-                data: {line: line},
-                success: function (data) {
-                    window.location.replace('http://sygesto/commande/ajout');
-                },
-                error: function (xhr) {
-                    alert("Une erreure s'est produite veillez ressayer plutard");
-                }
-            })
-        }
-    }
-
-    function addProduitToCommande() {
         $.ajax({
             method: "post",
-            url: "commande/addProduitToCommande",
-            data: {type: 2},
+            url: "commande/deletProduitFromCommande",
+            data: {line: line},
             success: function (data) {
                 window.location.replace('http://sygesto/commande/ajout');
             },
@@ -131,6 +138,23 @@
                 alert("Une erreure s'est produite veillez ressayer plutard");
             }
         })
+    }
+
+    function addProduitToLivraisonEndProcess() {
+        if (confirm('Voulez-vous enregistrer la livraison?')) {
+            $.ajax({
+                method: "post",
+                url: "livraison/addProduitToLivraisonEndProcess",
+                data: {type: 2},
+                success: function (data) {
+                    console.log(data);
+                    window.location.replace('http://sygesto/livraison');
+                },
+                error: function (xhr) {
+                    alert("Une erreure s'est produite veillez ressayer plutard");
+                }
+            })
+        }
     }
 
 

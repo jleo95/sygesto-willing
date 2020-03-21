@@ -97,6 +97,44 @@ class OffredetailModel extends Model
         return $this->execute($query, [$idOffre]);
     }
 
+    /**
+     * Selectionner les detail d'une commande par rapport a l'id du produit et de la commande /// en calculant les quantite livree et restante
+     * @param $idOffre
+     * @param $produit
+     * @return array|bool|mixed|\PDOStatement
+     */
+    public function show_offre_detail_by_offre_and_produit($idOffre, $produit)
+    {
+        $query = $this->makeQuery()
+            ->select('produit as produit_id', 'p.prodesignation produit', 'quantite', 'un.uniid as unite_id, un.unilibelle unite',
+                'f.famid as famille_id', 'f.famlibelle as famille', $this->table . '.offre, of.offdate as offre_date',
+                'ofs.offid as offshore_id, ofs.offdescription offshore, ofs.offdatefin offshore_datefin')
+            ->join('produits as p', $this->table . '.produit = proid')
+            ->join('unitemesure as un', 'p.prounite = un.uniid')
+            ->join('familles as f', 'f.famid = p.profamille')
+            ->join('offres of', 'of.offid = offre')
+            ->join('offshores ofs', 'of.offshore = ofs.offid')
+            ->where('offre = ? and ' . $this->table . '.produit = ?');
+        $detail = $this->execute($query, [$idOffre, $produit], $one = true);
+
+        #recupere les les produit deja livree mais incomplet
+        $livraisons = $this->execute(
+                    $this->makeQuery()
+                            ->from('livraisons')
+                            ->select('livquantite quantite, livproduit produit, livoffre offre')
+                            ->where('livoffre = ? and livproduit = ?'),
+                    [$idOffre, $produit]);
+//        $data = $this->execute($query);
+        $tmp = [];
+        $quantite = $detail->quantite;
+        foreach ($livraisons as $livraison) {
+            $quantite -= $livraison->quantite;
+        }
+        $detail->quantite_restante = $quantite;
+//        var_dump($livraisons);
+        return $detail;
+    }
+
     public function get_by_periode($start = '', $end = '')
     {
         if (empty($start)) {
@@ -124,6 +162,31 @@ class OffredetailModel extends Model
     public function deletProduitFromCommande(int $idProduit)
     {
         return parent::delete_by('produit', $idProduit);
+    }
+
+    public function show_produit_byNotLivred()
+    {
+        $query = $this->makeQuery()
+                ->select('off.produit produit_id, p.prodesignation produit', 'quantite', 'u.uniid unite_id, u.unilibelle unite', 'off.offre')
+            ->from('offre_detail as off')
+            ->join('produits p', 'p.proid = produit')
+            ->join('unitemesure u', 'p.prounite = u.uniid');
+//            ->join('offres o', 'o.offid = off.offre')
+//            ->order('offre DESC');
+
+        $livraisons = $this->execute($this->makeQuery()->from('livraisons')->select('livquantite quantite, livproduit produit, livoffre offre'));
+        $data = $this->execute($query);
+        $tmp = [];
+
+        foreach ($data as $d) {
+            foreach ($livraisons as $l) {
+                if (intval($l->produit) == intval($d->produit_id) && intval($l->offre) == intval($d->offre)) {
+                    $d->quantite = $d->quantite - $l->quantite;
+                }
+            }
+            $tmp[] = $d;
+        }
+        return $data;
     }
 
     protected function findAllQuery(?array $fields = [], ?string $orderBy = null)

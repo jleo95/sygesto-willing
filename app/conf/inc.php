@@ -187,6 +187,17 @@ $router->post('commande/deletProduitFromCommande', 'commande#deletProduitFromCom
 $router->get('commande/voir/:id', 'commande#voir');
 $router->get('commande/imprimer/:id', 'commande#imprimer');
 
+#livraison
+$router->get('livraison', 'livraison#index', 'livraison');
+$router->get('livraison/ajout', 'livraison#ajout', 'livraison');
+$router->post('livraison/ajout', 'livraison#ajout', 'livraison');
+$router->get('livraison/selectproduit', 'livraison#selectproduit', 'livraison');
+$router->post('livraison/addProduitToLivraison', 'livraison#addProduitToLivraison', 'livraison');
+$router->post('livraison/addProduitToLivraisonEndProcess', 'livraison#addProduitToLivraisonEndProcess');
+$router->post('livraison/trier', 'livraison#trier');
+$router->get('livraison/imprimer', 'livraison#imprimer');
+$router->post('livraison/imprimer', 'livraison#imprimer');
+
 
 /**
  * run app

@@ -340,7 +340,7 @@ function getStartingDay ($month = '', $year = '') {
 }
 
 /**
- * recuperer le premier jour d'un mois
+ * recuperer le dernier jour d'un mois
  * @param $month string le mois au quel on veut recuperer son premier jour || par defaut c'est le mois courant
  * @param $year string l'année au quelle on veut recuperer le premier jour d'un mois quelconque || par defaut c'est l'année courante
  * @param $interval string l'année au quelle on veut recuperer le premier jour d'un mois quelconque || par defaut c'est l'année courante

@@ -34,4 +34,10 @@ class GroupeMenuModel extends Model
         return $modules;
     }
 
+
+    protected function findAllQuery(?array $fields = [], ?string $orderBy = null)
+    {
+        return parent::findAllQuery($fields, $orderBy)
+                ->where('active = 1');
+    }
 }

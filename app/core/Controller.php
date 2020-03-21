@@ -66,6 +66,7 @@ class Controller
         $this->loadModel('offredetail');
         $this->loadModel('commandedetail');
         $this->loadModel('paiement');
+        $this->loadModel('livraison');
 
         if (isset($this->session->stkiduser)) {
             $droits = json_decode($this->User->get_by('useid', $this->session->stkiduser)->usedroits);
