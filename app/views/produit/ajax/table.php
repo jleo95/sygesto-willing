@@ -64,7 +64,7 @@ if (isset($script) AND $script) :
         }
 
     };
-    function operateFormatter(value, row, index) {
+    function operateFormatter(value, row, index) { 
         return [
             '<a rel="tooltip" title="Voir plus" href="#showAllInfosProduit" data-toggle="modal" class="table-action more-infos text-primary" href="javascript:void(0)">',
             '<i class="fa fa-eye"></i>',

@@ -1,14 +1,11 @@
 $(document).ready(function (e) {
-    $('#peremptionAddOffshore').pickadate({
-        formatSubmit: 'yyyy-mm-dd'
-    });
-
+    
     $('#formAddOffshore').submit(function (e) {
         e.preventDefault();
 
         var formValide = true;
 
-        if ($('#designAddOffshore').val() == '') {
+        /*if ($('#designAddOffshore').val() == '') {
             fieldForm($('#designAddOffshore'), 'Veillez saissir le nom du offshore', 1);
             formValide = false;
         }else {
@@ -41,13 +38,6 @@ $(document).ready(function (e) {
             fieldForm($('#peremptionAddOffshore'), '', 2);
         }
 
-        // verication du champs unite de mesure
-        if ($('#uniteAddOffshore').val() == '') {
-            fieldForm($('#uniteAddOffshore'), 'Veillez chosir une unité de mesure', 1);
-            formValide = false;
-        }else {
-            fieldForm($('#uniteAddOffshore'), '', 2);
-        }
 
 
         if ($('#familleAddOffshore').val() == '') {
@@ -57,7 +47,7 @@ $(document).ready(function (e) {
         if ($('#seuilAddOffshore').val() != '') {
             fieldForm($('#seuilAddOffshore'), '', 2);
         }
-
+*/
         valueOffshore = false;
 
         if (formValide) {
@@ -72,23 +62,23 @@ $(document).ready(function (e) {
                         // $(window).resize(function () {
                         //     $table.bootstrapTable('resetView');
                         // });
-                        // $('#bodyTableOffshore').html(data.bodyTableOffshore);
-                        $('#addProuit .modal-header h4').html('Félicitation');
-                        $('#addProuit .modal-body').html('<p>Un nouveau offshore a été ajouté à ligne #1</p>');
-                        $('#addProuit .modal-content').append(data.modalFooter);
-                        $('#addProuit .modal-dialog').addClass('small-modal');
+                        $('#bodyTableOffshore').html(data.bodyTableOffshore);
+                        $('#addOffshore .modal-header h4').html('Félicitation');
+                        $('#addOffshore .modal-body').html('<p>Un nouveau offshore a été ajouté à ligne #1</p>');
+                        $('#addOffshore .modal-content').append(data.modalFooter);
+                        $('#addOffshore .modal-dialog').addClass('small-modal');
                     }else if (data.error == 1) {
-                        $('#addProuit .errorAdd').html(data.mssge);
+                        $('#addOffshore .errorAdd').html(data.mssge);
                     }else {
-                        $('#addProuit .modal-header h4').html('Echec');
-                        $('#addProuit .modal-body').html('<p>Erreur de serveur. Le offshore n\'a pas été ajouté. <br>Veillez réessayer plutard</p>');
-                        $('#addProuit .modal-content').append(data.modalFooter);
-                        $('#addProuit .modal-dialog').addClass('small-modal');
+                        $('#addOffshore .modal-header h4').html('Echec');
+                        $('#addOffshore .modal-body').html('<p>Erreur de serveur. Le offshore n\'a pas été ajouté. <br>Veillez réessayer plutard</p>');
+                        $('#addOffshore .modal-content').append(data.modalFooter);
+                        $('#addOffshore .modal-dialog').addClass('small-modal');
                     }
 
                 },
                 error: function (xhr, error) {
-                    alert('Une erreur s\'est survnue lors du traitement');
+                    alert('Une erreur est survenue lors du traitement');
                 }
             });
             // $(window).resize(function () {
@@ -176,9 +166,9 @@ window.operateEvents = {
             data: {idOffshore: row.id},
             success: function (data) {
                 nameOffshore = data.nameOffshore;
-                $('#deletProuit .modal-body').html(data.modalBody);
-                $('#deletProuit .modal-content .modal-header h4').html('Suppression');
-                $('#deletProuit').modal('show');
+                $('#deletOffshore .modal-body').html(data.modalBody);
+                $('#deletOffshore .modal-content .modal-header h4').html('Suppression');
+                $('#deletOffshore').modal('show');
             },
             error: function (xhr) {
                 alert('Erreur de chargement');
@@ -188,6 +178,7 @@ window.operateEvents = {
 
 };
 function operateFormatter(value, row, index) {
+    alert("kjsdkhsdfhsdhfsj:hdjfhs")
     return [
         '<a rel="tooltip" title="Voir plus" class="table-action more-infos text-primary" href="javascript:void(0)">',
         '<i class="fa fa-eye"></i>',
@@ -215,8 +206,8 @@ function laodDataForDeleteOffshore(idOffshore) {
         data: {idOffshore: idOffshore},
         success: function (data) {
             nameOffshore = data.nameOffshore;
-            $('#deletProuit .modal-body').html(data.modalBody);
-            $('#deletProuit .modal-content .modal-header h4').html('Suppression');
+            $('#deletOffshore .modal-body').html(data.modalBody);
+            $('#deletOffshore .modal-content .modal-header h4').html('Suppression');
         },
         error: function (xhr) {
             alert('Erreur de chargement');
@@ -303,7 +294,7 @@ function confirmAdd(status) {
         });
     }
 
-    $('#addProuit .modal-dialog').removeClass('small-modal');
+    $('#addOffshore .modal-dialog').removeClass('small-modal');
 
 }
 
@@ -353,7 +344,8 @@ function printOffshore(_idPrinter) {
 }
 
 function contentModalAdd() {
-    $('#addProuit .modal-content .modal-header h4').html('Nouveau offshore');
-    $('#addProuit .modal-body').load('offshore/loadAdd');
-    $('#addProuit').modal('show');
+    $('#addOffshore .modal-content .modal-header h4').html('Nouveau offshore');
+    $('#addOffshore .modal-body').load('offshore/loadAdd');
+    $('#addOffshore').modal('show');
 }
+

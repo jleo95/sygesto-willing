@@ -165,15 +165,15 @@ $router->get('backup', 'backup#index');
 $router->get('offshore', 'offshore#index', 'offshore');
 $router->get('/offshore/loadAdd', 'offshore#loadAdd');
 $router->post('/offshore/loadAdd', 'offshore#loadAdd');
-/*$router->get('/produit/add', 'produit#add', 'produit#add');
-$router->get('/produit/imprimer', 'produit#imprimer');
-$router->post('/produit/add', 'produit#add');
-$router->post('/produit/laodDataForDeleteProduit', 'produit#laodDataForDeleteProduit');
-$router->post('/produit/delete', 'produit#delete');
-$router->post('/produit/edit', 'produit#edit');
-$router->post('/produit/trieProduit', 'produit#trieProduit');
-$router->post('/produit/showAllInfosProduit', 'produit#showAllInfosProduit');
-$router->post('/produit/laodForEditeProduit', 'produit#laodForEditeProduit');*/
+$router->get('/offshore/add', 'offshore#add', 'offshore#add');
+$router->get('/offshore/imprimer', 'offshore#imprimer');
+$router->post('/offshore/add', 'offshore#add');
+$router->post('/offshore/laodDataForDeleteOffshore', 'offshore#laodDataForDeleteOffshore');
+$router->post('/offshore/delete', 'offshore#delete');
+$router->post('/offshore/edit', 'offshore#edit');
+$router->post('/offshore/trieOffshore', 'offshore#trieOffshore');
+$router->post('/offshore/showAllInfosOffshore', 'offshore#showAllInfosOffshore');
+$router->post('/offshore/laodForEditeOffshore', 'offshore#laodForEditeOffshore');
 
 
 

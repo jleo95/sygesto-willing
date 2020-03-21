@@ -60,7 +60,7 @@ class CommandeController extends Controller
                 $offre['offrealiserpar'] = $this->session->stkiduser;
                 if ($this->Offre->insert($offre)) {
                     $offid = $this->Offre->lastInsert();
-
+                   
                     foreach ($_SESSION['listProduitInCommnade'] as $produit) {
                         $this->Offredetail->insert([
                             'produit' => $produit['produit'],
