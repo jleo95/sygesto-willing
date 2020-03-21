@@ -8,18 +8,31 @@
 ?>
 
 <?php
-var_dump($offshores);
-foreach ($offshores as $offshore) {
+//var_dump($offshore);
+foreach ($offshore as $offshores) {
 //    if (calculDate($produit->prodatePeremption) > 0)
     ?>
     <tr>
-        <td><?php  ?></td>
-        <td><?php  echo $offshore->offdescrition; ?></td>
-        <td><?php //echo $offshores->famille ?></td>
-        <td><span style="font-style: italic;"><?php //echo number_format($produit->proprixUnitVente, 2, ',', ' ')?></span></td>
-        <td><span style="font-style: italic;"><?php //echo number_format($produit->proprixblogVente, 2, ',', ' ') ?></span></td>
-        <td><?php //if ($stock_function->stock_boutique_by_produit($produit->proid) == 0) { ?>
-            <span style="font-style: italic; font-size: 12px;">rupture</span>
+        <td><?php  echo $offshores->offid;?></td>
+        <td><?php  echo $offshores->offdescription; ?></td>
+        <td><?php echo $offshores->empnom.' '.ucfirst(substr($offshores->empprenom, 0,1)).'.' ?></td>
+        <td><span style="font-style: italic;"><?php echo  $offshores->clinom.' '.$offshores->cliprenom; ?></span></td>
+        <td><span style="font-style: italic;"><?php echo substr($offshores->offdatedebut, 0,10) ?></span></td>
+        <td><?php 
+        //$dateNow = date("Y-m-d H:i:s");
+        //$dateInit = strtotime($offshores->offdatefin);
+        //$dateInit = date('Y-m-d H:i:s', $dateInit);
+        //echo date_diff($dateInit, $dateNow); 
+        $date_expire = $offshores->offdatefin;    
+        $date = new DateTime($date_expire);
+        $now = new DateTime();
+        if  (calculDate($offshores->offdatefin) > 0){
+            echo $date->diff($now)->format("%d J, %h H");  
+        }
+        else{
+            echo "Cloturé";
+    }?>
+
             
         </td>
         <td></td>
@@ -80,4 +93,7 @@ if (isset($script) AND $script) :
         ].join('');
     }
 </script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script type="text/javascript" src="countdown3.js"></script>
+  
 <?php endif; ?>

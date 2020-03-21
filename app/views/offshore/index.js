@@ -78,7 +78,7 @@ $(document).ready(function (e) {
 
                 },
                 error: function (xhr, error) {
-                    alert('Une erreur s\'est survnue lors du traitement');
+                    alert('Une erreur est survenue lors du traitement');
                 }
             });
             // $(window).resize(function () {
@@ -178,6 +178,7 @@ window.operateEvents = {
 
 };
 function operateFormatter(value, row, index) {
+    alert("kjsdkhsdfhsdhfsj:hdjfhs")
     return [
         '<a rel="tooltip" title="Voir plus" class="table-action more-infos text-primary" href="javascript:void(0)">',
         '<i class="fa fa-eye"></i>',
@@ -347,3 +348,4 @@ function contentModalAdd() {
     $('#addOffshore .modal-body').load('offshore/loadAdd');
     $('#addOffshore').modal('show');
 }
+

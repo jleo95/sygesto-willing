@@ -16,7 +16,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="triProduit">Trier par: </label>
-                        <select name="triProduit" id="triProduit" class="form-control" onchange="trieProduit(this.value)">
+                        <select name="triProduit" id="triProduit" class="form-control" onchange="trieOffshore(this.value)">
                             <option value="">Trier</option>
                             <option value="3">Déjà terminé</option>
                             <option value="1">En cours</option>

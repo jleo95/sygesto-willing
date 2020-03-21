@@ -25,7 +25,7 @@ class OffshoreModel extends Model {
 
     protected function findAllQuery(?array $fields = [], ?string $orderBy = null)
     {
-        $fields = explode(',', 'offid, offdescription, offresponsable, offdatedebut, offdatefin, offclient');
+        $fields = explode(',', 'offid, offdescription, offresponsable, offdatedebut, offdatefin, offclient, clinom, cliprenom, empnom,  empprenom');
         return parent::findAllQuery($fields, $orderBy)
                 ->join('clients', 'offclient = cliid')
                 ->join('employes', 'offresponsable = empid')
@@ -67,7 +67,7 @@ class OffshoreModel extends Model {
      * @param $jumule bool si on veut jumuler les produits expirés avec ceux proche à expirés
      * @return array||bool
      */
-    public function produit_by_peremtion($temps = 3, $expire = true, $jumule = false )
+    public function offshore_by_peremtion($temps = 3, $expire = true, $jumule = false )
     {
         $start = getStartingDay();
         $end = '';
@@ -81,9 +81,8 @@ class OffshoreModel extends Model {
         $end .= ' 23:59';
 
         $query = $this->makeQuery()
-                ->join('famailles', 'profamille = famid')
-                ->join('fournisseurs', 'fouid = profournisseur')
-                ->join('unitemesure', 'prounitemessure = uniid');
+                ->join('clients', 'offclient = cliid')
+                ->join('employes', 'offresponsable = empid');
 
         if (!empty($orderBy)) {
             $query = $query->order($orderBy);
@@ -91,14 +90,14 @@ class OffshoreModel extends Model {
 
         $data = [$start, $end];
         if ($expire && !$jumule) {
-            $query->where('prodatePeremption <= ?');
+            $query->where('offdatefin <= ?');
             $data = [$end];
         }elseif ($expire && $jumule) {
-            $query = $query->where('(prodatePeremption BETWEEN ? AND ? OR prodatePeremption <= ? )');
+            $query = $query->where('(offdatefin BETWEEN ? AND ? OR offdatefin <= ? )');
             $data [] = $end;
         }
         else {
-            $query = $query->where('prodatePeremption BETWEEN ? AND ?');
+            $query = $query->where('offdatefin BETWEEN ? AND ?');
         }
         return $this->execute($query, $data);
     }
