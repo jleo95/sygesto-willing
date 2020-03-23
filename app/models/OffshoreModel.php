@@ -46,20 +46,21 @@ class OffshoreModel extends Model {
 //        return $res;
 //    }
 
-    protected function findByQuery(?string $nameFields = null, ?array $fields = null, ?string $orderBy = null)
-    {
-        $fields = explode(',',
-            'produits.*, unilibelle unite, uniabv, famlibelle famille, famembalageBlog embalage, ' .
-                    'founom, fouprenom');
-        $query = parent::findByQuery($nameFields, $fields, $orderBy)
-                ->join('familles', 'profamille = famid')
-                ->join('fournisseurs', 'fouid = profournisseur')
-                ->join('unitemesure', 'prounitemessure = uniid');
-        if (!empty($orderBy)) {
-            $query = $query->order($orderBy);
-        }
-        return $query;
-    }
+//    protected function findByQuery(?string $nameFields = null, ?array $fields = null, ?string $orderBy = null)
+//    {
+//        $fields = explode(',',
+//            'p.*, unilibelle unite, uniabv, famlibelle famille, famembalageBlog embalage, ' .
+//                    'founom, fouprenom');
+//        $query = parent::findByQuery($nameFields, $fields, $orderBy)
+//                ->join('produits p', 'p.proid = ')
+//                ->join('familles', 'profamille = famid')
+//                ->join('fournisseurs', 'fouid = profournisseur')
+//                ->join('unitemesure un', 'p.prounite = uniid');
+//        if (!empty($orderBy)) {
+//            $query = $query->order($orderBy);
+//        }
+//        return $query;
+//    }
 
     /**
      * @param $temps int le temps est fixé en terme de mois par exemple 3, ou 4, 8 ... (mois)

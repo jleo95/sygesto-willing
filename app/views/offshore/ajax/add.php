@@ -82,92 +82,35 @@
 
 <script>
     $(document).ready(function () {
+
+        // from add (view/offshore/ajax/add.php
         $('#dateFinAddOffshore').pickadate({
             formatSubmit: 'yyyy-mm-dd',
-            format: 'yyyy-mm-dd',
+            format: 'yyyy-mm-dd'
         });
+        // from add (view/offshore/ajax/add.php
         $('#dateDebutAddOffshore').pickadate({
             formatSubmit: 'yyyy-mm-dd',
-            format: 'yyyy-mm-dd',
+            format: 'yyyy-mm-dd'
         });
-
 
         $('#addOffshore .modal-content').children('.modal-footer').remove();
         $('#formAddOffshore').submit(function (e) {
             e.preventDefault();
 
             var formValide = true;
-            // Vérification de la description du offshore
-            /*if ($('#descriptionAddOffshore').val() == '') {
-                fieldForm($('#descriptionAddOffshore'), 'Veillez saisir la description du offshore', 1);
-                formValide = false;
-            }else {
-                fieldForm($('#descriptionAddOffshore'), '', 2);
-            }
-*/
 
-            // verication du champs date de début
-          /*  if ($('#dateDebutAddOffshore').val() == '') {
-                fieldForm($('#dateDebutAddOffshore'), 'Veillez entrer la date de début du offshore', 1);
-                formValide = false;
-            }else {
-                fieldForm($('#dateDebutAddOffshore'), '', 2);
-            }*/
-
-
-            // verication du champs date de fin
-            // if ($('#dateFinAddOffshore').val() == '') {
-            //     fieldForm($('#dateFinAddOffshore'), 'Veillez entrer la date de fin du offshore', 1);
-            //     formValide = false;
-            // }else {
-            //     fieldForm($('#dateFinAddOffshore'), '', 2);
-            // }
-
-            // verication du champs client
-           /* if ($('#clientAddOffshore').val() == '') {
-                fieldForm($('#clientAddOffshore'), 'Veillez chosir un client', 1);
-                formValide = false;
-            }else {
-                fieldForm($('#clientAddOffshore'), '', 2);
-            }*/
-
-            // verication du champs responsable
-            /*if ($('#responsableAddOffshore').val() == '') {
-                fieldForm($('#responsableAddOffshore'), 'Veillez chosir un Responsable', 1);
-                formValide = false;
-            }else {
-                fieldForm($('#responsableAddOffshore'), '', 2);
-            }
-*/
-
-            
-
-          // alert("c'est deja bon");
-            // formValide = false;
-            // console.log($('#peremptionAddProduit').val());
             if (formValide) {
-               <?php  var_dump($data);?> 
-
                 $.ajax({
                     url: 'offshore/add',
                     type: 'post',
                     dataType: 'json',
                     data: $(this).serialize(),
-                    
+
                     success: function (data) {
                         console.log(data);
                         if (data.error == 0) {
-                            $('#bodyTableOffshore').html(data.bodyTableOffshore);
-
-                            var offshore = data.offshore;
-                            
-                            $table.bootstrapTable('prepend', offshore);
-                            console.log(data);
-                             alert("forme valide Ok");
-                            $('#addOffshore .modal-header h4').html('Félicitation');
-                            $('#addOffshore .modal-body').html('<p>Votre offshore a été enregistré</p>');
-                            $('#addOffshore .modal-content').append(data.modalFooter);
-                            $('#addOffshore .modal-dialog').addClass('small-modal');
+                            window.location.replace('http://sygesto/offshore');
                         }else if (data.error == 1) {
                             $('#addOffshore .errorAdd').html(data.mssge);
                         }else {
@@ -175,6 +118,7 @@
                             $('#addOffshore .modal-body').html('<p>Erreur de serveur. L\'offshore n\'a pas été ajouté. <br>Veillez réessayer plutard</p>');
                             $('#addOffshore .modal-content').append(data.modalFooter);
                             $('#addOffshore .modal-dialog').addClass('small-modal');
+                            window.location.replace('http://sygesto/offshore');
                         }
 
                     },

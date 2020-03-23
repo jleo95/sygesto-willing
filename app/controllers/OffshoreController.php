@@ -30,12 +30,15 @@ class OffshoreController extends Controller
 
     public function index()
     {
-        
-        $this->layout->setTitle('offshores');
-        $this->layout->setTitle('Liste des offshores', 'v');
+
+        $this->layout->assign('fournisseurs', $this->Fournisseur->all());
+        $this->layout->assign('employes', $this->Employe->all());
+        $this->layout->assign('clients', $this->Client->all());
         $this->layout->assign('offshore', $this->Offshore->all([], 'offid DESC'));
         $this->layout->assign('employes', $this->Employe->all());
         $this->layout->assign('tbodyOffshore', $this->loadTable());
+        $this->layout->setTitle('offshores');
+        $this->layout->setTitle('Liste des offshores', 'v');
         $this->layout->setJS('offshore' . DS . 'index');
         $this->layout->setStyle('offshore' . DS . 'offshore');
         $this->layout->render('offshore' . DS . 'index');
@@ -43,7 +46,9 @@ class OffshoreController extends Controller
         
     }
 
-    #ajout d'un produit
+    /**
+     * Ajout d'un offshore
+     */
     public function add()
     {
         $data = [];
@@ -55,15 +60,15 @@ class OffshoreController extends Controller
             $error ['danger']['description'] = true;
         }
 
-       
+
         if (isset($this->input->responsableAddOffshore) AND !empty($this->input->responsableAddOffshore)) {
-            $data ['offresposable'] = $this->input->responsableAddOffshore;
+            $data ['offresponsable'] = $this->input->responsableAddOffshore;
         }
 
         else {
             $error ['danger']['responsable'] = true;
         }
-       
+
 
         if (isset($this->input->clientAddOffshore) AND !empty($this->input->clientAddOffshore)) {
             $data ['offclient'] = $this->input->clientAddOffshore;
@@ -73,18 +78,18 @@ class OffshoreController extends Controller
             $error ['danger']['client'] = true;
         }
 
-       
-        if (isset($this->input->dateFinAddOffshore) AND !empty($this->input->dateFinAddOffshore)) {
-            $data ['offdatefin'] = $this->input->dateFinAddOffshore;
+
+        if (isset($this->input->dateFinAddOffshore_submit) AND !empty($this->input->dateFinAddOffshore_submit)) {
+            $data ['offdatefin'] = $this->input->dateFinAddOffshore_submit;
         }
 
         else {
             $error ['danger']['datefin'] = true;
         }
 
-       
-        if (isset($this->input->dateDebutAddOffshore) AND !empty($this->input->dateDebutAddOffshore)) {
-            $data ['offdatedebut'] = $this->input->dateDebutAddOffshore;
+
+        if (isset($this->input->dateDebutAddOffshore_submit) AND !empty($this->input->dateDebutAddOffshore_submit)) {
+            $data ['offdatedebut'] = $this->input->dateDebutAddOffshore_submit;
         }
 
         else {
@@ -97,31 +102,15 @@ class OffshoreController extends Controller
 
         if (empty($error)) {
             $data['offdatecreation'] = date('Y-m-d H:i:s', time());
-            $data['prorealiserpar'] = $this->session->stkiduser;
+            $data['offrealiserpar'] = $this->session->stkiduser;
             if ($this->Offshore->insert($data)) {
-
-                $offshore = $this->Offshore->get_by('offid', $this->Offshore->lastInsert());
-
-                
-
-                $offshoreHtml = [
-                    'id' => $offshore->offid,
-                    'description' => $offshore->offdescription,
-                    'respo' => $offshore->offres,
-                    
-                ];
-
-                $response['off']           = $offshoreHtml;
-                $response ['error']            = 0;
-                $this->offshores                = $this->Offshore->all();
-                $html                          = $this->loadTable();
-                $response ['bodyTableOffshore'] = $html;
-                $modalFooter                   = '<div class="modal-footer"><button type="button" data-dismiss="modal" class="btn btn-primary" onclick="confirmAdd(0)">Ok</button></div>';
-                $response ['modalFooter']      = $modalFooter;
+                $_SESSION['offshoreAddError'] = 0;
+                $response ['error'] = 0;
+                $_SESSION['error'] = $response;
             }else {
                 $response ['error'] = 2;
-                $modalFooter = '<div class="modal-footer"><button type="button" data-dismiss="modal" class="btn btn-primary" onclick="confirmAdd(1)">Ok</button></div>';
-                $response ['modalFooter'] = $modalFooter;
+                $_SESSION['offshoreAddError'] = 1;
+                $_SESSION['error'] = $response;
             }
         }else {
             $response ['error'] = 1;

@@ -1,54 +1,31 @@
 $(document).ready(function (e) {
-    
+
+    /**
+     * configuratiton des differents champs
+     */
+    // from add (view/offshore/ajax/add.php
+    $('#dateDebutAddOffshore').pickadate({
+        // formatSubmit: 'yyyy-mm-dd',
+    });
+
+    // from add (view/offshore/ajax/add.php
+    $('#dateDebutAddOffshore').change(function (e) {
+        if ($(this).val() != '') {
+            var dateFin = $(this).val().split('-');
+            console.log(dateFin);
+            $('#dateFinAddOffshore').removeAttr('disabled');
+            $('#dateFinAddOffshore').pickadate({
+                min: [dateFin[0], dateFin[1], dateFin[2]]
+            });
+        }
+    })
+
+    //sumission du formulaire d'ajout de offshore
+
     $('#formAddOffshore').submit(function (e) {
         e.preventDefault();
 
         var formValide = true;
-
-        /*if ($('#designAddOffshore').val() == '') {
-            fieldForm($('#designAddOffshore'), 'Veillez saissir le nom du offshore', 1);
-            formValide = false;
-        }else {
-            fieldForm($('#designAddOffshore'), '', 2);
-        }
-
-       
-
-        // verification du prix unitaire de vente
-        if ($('#prixUnitVenteAddOffshore').val() == '') {
-            fieldForm($('#prixUnitVenteAddOffshore'), 'Veillez saissir le prix unitaire de vente', 1);
-            formValide = false;
-        }else {
-            fieldForm($('#prixUnitVenteAddOffshore'), '', 2);
-        }
-
-        // verification du prix global de vente
-        if ($('#prixGlobVenteAddOffshore').val() == '') {
-            fieldForm($('#prixGlobVenteAddOffshore'), 'Veillez saissir le prix global de vente', 1);
-            formValide = false;
-        }else {
-            fieldForm($('#prixGlobVenteAddOffshore'), '', 2);
-        }
-
-        // verication du champs date de peremption
-        if ($('#peremptionAddOffshore').val() == '') {
-            fieldForm($('#peremptionAddOffshore'), 'Veillez entrer la date de peremption', 1);
-            formValide = false;
-        }else {
-            fieldForm($('#peremptionAddOffshore'), '', 2);
-        }
-
-
-
-        if ($('#familleAddOffshore').val() == '') {
-            fieldForm($('#familleAddOffshore'), '', 2);
-        }
-
-        if ($('#seuilAddOffshore').val() != '') {
-            fieldForm($('#seuilAddOffshore'), '', 2);
-        }
-*/
-        valueOffshore = false;
 
         if (formValide) {
             $.ajax({
@@ -56,24 +33,19 @@ $(document).ready(function (e) {
                 type: 'post',
                 dataType: 'json',
                 data: $(this).serialize(),
+
                 success: function (data) {
                     console.log(data);
                     if (data.error == 0) {
-                        // $(window).resize(function () {
-                        //     $table.bootstrapTable('resetView');
-                        // });
-                        $('#bodyTableOffshore').html(data.bodyTableOffshore);
-                        $('#addOffshore .modal-header h4').html('Félicitation');
-                        $('#addOffshore .modal-body').html('<p>Un nouveau offshore a été ajouté à ligne #1</p>');
-                        $('#addOffshore .modal-content').append(data.modalFooter);
-                        $('#addOffshore .modal-dialog').addClass('small-modal');
+                        window.location.replace('http://sygesto/offshore');
                     }else if (data.error == 1) {
                         $('#addOffshore .errorAdd').html(data.mssge);
                     }else {
                         $('#addOffshore .modal-header h4').html('Echec');
-                        $('#addOffshore .modal-body').html('<p>Erreur de serveur. Le offshore n\'a pas été ajouté. <br>Veillez réessayer plutard</p>');
+                        $('#addOffshore .modal-body').html('<p>Erreur de serveur. L\'offshore n\'a pas été ajouté. <br>Veillez réessayer plutard</p>');
                         $('#addOffshore .modal-content').append(data.modalFooter);
                         $('#addOffshore .modal-dialog').addClass('small-modal');
+                        window.location.replace('http://sygesto/offshore');
                     }
 
                 },
@@ -81,13 +53,62 @@ $(document).ready(function (e) {
                     alert('Une erreur est survenue lors du traitement');
                 }
             });
-            // $(window).resize(function () {
-            //     $table.bootstrapTable('resetView');
-            // });
+            $(window).resize(function () {
+                $table.bootstrapTable('resetView');
+            });
         }
-
         return formValide;
     });
+
+
+
+
+
+
+    // $('#formAddOffshore').submit(function (e) {
+    //     e.preventDefault();
+    //
+    //     var formValide = true;
+    //     valueOffshore = false;
+    //
+    //     if (formValide) {
+    //         $.ajax({
+    //             url: 'offshore/add',
+    //             type: 'post',
+    //             dataType: 'json',
+    //             data: $(this).serialize(),
+    //             success: function (data) {
+    //                 console.log(data);
+    //                 if (data.error == 0) {
+    //                     // $(window).resize(function () {
+    //                     //     $table.bootstrapTable('resetView');
+    //                     // });
+    //                     $('#bodyTableOffshore').html(data.bodyTableOffshore);
+    //                     $('#addOffshore .modal-header h4').html('Félicitation');
+    //                     $('#addOffshore .modal-body').html('<p>Un nouveau offshore a été ajouté à ligne #1</p>');
+    //                     $('#addOffshore .modal-content').append(data.modalFooter);
+    //                     $('#addOffshore .modal-dialog').addClass('small-modal');
+    //                 }else if (data.error == 1) {
+    //                     $('#addOffshore .errorAdd').html(data.mssge);
+    //                 }else {
+    //                     $('#addOffshore .modal-header h4').html('Echec');
+    //                     $('#addOffshore .modal-body').html('<p>Erreur de serveur. Le offshore n\'a pas été ajouté. <br>Veillez réessayer plutard</p>');
+    //                     $('#addOffshore .modal-content').append(data.modalFooter);
+    //                     $('#addOffshore .modal-dialog').addClass('small-modal');
+    //                 }
+    //
+    //             },
+    //             error: function (xhr, error) {
+    //                 alert('Une erreur est survenue lors du traitement');
+    //             }
+    //         });
+    //         // $(window).resize(function () {
+    //         //     $table.bootstrapTable('resetView');
+    //         // });
+    //     }
+    //
+    //     return formValide;
+    // });
 
 
     // edite offshore
@@ -178,7 +199,6 @@ window.operateEvents = {
 
 };
 function operateFormatter(value, row, index) {
-    alert("kjsdkhsdfhsdhfsj:hdjfhs")
     return [
         '<a rel="tooltip" title="Voir plus" class="table-action more-infos text-primary" href="javascript:void(0)">',
         '<i class="fa fa-eye"></i>',
@@ -345,7 +365,9 @@ function printOffshore(_idPrinter) {
 
 function contentModalAdd() {
     $('#addOffshore .modal-content .modal-header h4').html('Nouveau offshore');
-    $('#addOffshore .modal-body').load('offshore/loadAdd');
+    // $('#addOffshore .modal-body').load('offshore/loadAdd');
+    $('#addOffshore .modal-body input').val('');
+    $('#addOffshore .modal-body select').val('');
     $('#addOffshore').modal('show');
 }
 

@@ -135,18 +135,66 @@
                         <h4 class="modal-title">Nouvel offshore</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="container-form-AddProduit">
+                        <div class="container-form-AddOffshore">
                             <div class="errorAdd"></div>
-                            <form action="" method="post" id="formAddProduit">
-                               
-                               
-
-                                <div class="row">
-                                    
-                                    
+                            <form action="" method="post" id="formAddOffshore">
+                                <div class="form-group">
+                                    <label for="descriptionAddOffshore">Description</label>
+                                    <input type="text" name="descriptionAddOffshore" id="descriptionAddOffshore" class="form-control" placeholder="Description du offshore" required>
+                                    <span class="help-block"></span>
                                 </div>
 
-                                
+                                <div class="form-group">
+                                    <label for="responsableAddOffshore">Responsable</label>
+                                    <select name="responsableAddOffshore" id="responsableAddOffshore" class="form-control">
+                                        <option value="" >Choisir un Responsable</option>
+                                        <?php foreach ($employes as $employe) {
+                                            ?>
+
+                                            <option value="<?php echo $employe->empid; ?>"><?php echo ucfirst($employe->empnom) . ' ' . ucfirst($employe->empprenom) ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                    <span class="help-block"></span>
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <div class="col-md-6">
+                                        <label for="dateDebutAddOffshore">Date de debut</label>
+                                        <input type="text" name="dateDebutAddOffshore" id="dateDebutAddOffshore" class="form-control" placeholder="Date de début offshore" required>
+                                        <span class="help-block"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="dateFinAddOffshore">Date de fin</label>
+                                        <input type="text" name="dateFinAddOffshore" id="dateFinAddOffshore" class="form-control" placeholder="Date de fin offshore" disabled required>
+                                        <span class="help-block"></span>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="clientAddOffshore">Client</label>
+                                    <select name="clientAddOffshore" id="clientAddOffshore" class="form-control">
+                                        <?php foreach ($clients as $client) {
+                                            ?>
+                                            <option value="" >Choisir un client</option>
+
+                                            <option value="<?php echo $client->cliid; ?>"><?php echo ucfirst($client->clinom) . ' ' . ucfirst($client->cliprenom) ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                    <span class="help-block"></span>
+                                </div>
+
+
+                                <div class="row">
+
+                                </div>
 
                                 <div class="clear">
                                     <div class="btn-group right">
@@ -173,6 +221,35 @@
             });
         </script>
         <?php
+    }
+    ?>
+    <?php
+    if (isset($_SESSION['offshoreAddError']) AND $_SESSION['offshoreAddError'] === 0) {
+        ?>
+        <script>
+            $.gritter.add({
+                title: 'Félicitation',
+                text: 'Vous avez ajouté un nouveau offshore',
+                image: 'assets/img/confirm.png'
+            });
+        </script>
+        <?php
+        unset($_SESSION['offshoreAddError']);
+    }
+    ?>
+    <?php
+//    var_dump($_SESSION['error']);
+    if (isset($_SESSION['offshoreAddError']) AND $_SESSION['offshoreAddError'] === 1) {
+        ?>
+        <script>
+            $.gritter.add({
+                title: 'Echec',
+                text: 'Offshore non ajouté. Veillez ressayer plutard',
+                image: 'assets/img/un.png'
+            });
+        </script>
+        <?php
+        unset($_SESSION['offshoreAddError']);
     }
     ?>
 </div>
