@@ -21,6 +21,9 @@ class CommandeController extends Controller
         $this->commandes = $this->Offre->all([], 'offdate DESC');
     }
 
+    /**
+     * Page d'accueil, affiche la liste de toutes les commandes passees
+     */
     public function index()
     {
         $this->layout->assign('commandes', $this->loadTable());
@@ -53,21 +56,27 @@ class CommandeController extends Controller
 
             $offre['offdate'] = (isset($this->input->dateCommande) && !empty($this->input->dateCommande)) ? $this->input->dateCommande : date('Y-m-d H:i', time());
 
-            if (!empty($error)) {
+            if (!empty($error)) { #gestion de erreura
                 #a revoir la gestion des erreur
                 $this->layout->assign('errors', $error);
-            }else{
+            }else{ #si on a aucune erreur on passe a l'insertion des donnees la base de donnees
                 $offre['offrealiserpar'] = $this->session->stkiduser;
-                if ($this->Offre->insert($offre)) {
+                if ($this->Offre->insert($offre)) { #insertion de la commande dans la table offrea (si elle se passe bien on insert maintenant ces detail dans la table offre_detail)
                     $offid = $this->Offre->lastInsert();
-                   
-                    foreach ($_SESSION['listProduitInCommnade'] as $produit) {
+                    $commandes = $_SESSION['listProduitInCommnade'];
+
+                    #insertion des detail de la commande
+                    foreach ($commandes as $produit) {
                         $this->Offredetail->insert([
                             'produit' => $produit['produit'],
                             'offre' => $offid,
                             'quantite' => $produit['quantite']
                         ]);
                     }
+                    #on cres une variable de session pour les message de succes
+                    $_SESSION['commandeAddIsSuccess'] = 1;
+
+                    #on supprime toute les variables de session a l'exception de $_SESSION['commandeAddIsSuccess']
                     unset($_SESSION['listProduitInCommnade']);
                     unset($_SESSION['process']);
                     unset($error);
@@ -97,6 +106,9 @@ class CommandeController extends Controller
     }
 
 
+    /**
+     * Ajout d'un produit dans liste de commande
+     */
     public function addProduitToCommande()
     {
 
@@ -135,6 +147,10 @@ class CommandeController extends Controller
     }
 
 
+    /**
+     * Voir les detail d'une commande donnee
+     * @param $id int l'identifiant de la commande qu'on veut voir ses details
+     */
     public function voir($id)
     {
 //        $groupByFamille = $this->Offredetail->show_produit_by_offre_groupBy_famille($id);
@@ -232,6 +248,10 @@ class CommandeController extends Controller
     }
 
 
+    /**
+     * Construction de la table html pour l'affichage des commandes
+     * @return string renvoi une table html
+     */
     private function loadTable()
     {
         $commandes = $this->commandes;

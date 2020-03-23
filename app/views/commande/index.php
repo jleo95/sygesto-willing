@@ -80,4 +80,20 @@
         </div>
 </div>
 
+<?php
+#on verifie si la commande a été bien effectuée (si oui on affiche le message de succes )
+if (isset($_SESSION['commandeAddIsSuccess']) AND $_SESSION['commandeAddIsSuccess'] === 1) {
+    ?>
+    <script>
+        $.gritter.add({
+            title: 'Félicitation',
+            text: 'Vous avez passé une nouvelle commande',
+            image: 'assets/img/confirm.png'
+        });
+    </script>
+    <?php
+    unset($_SESSION['commandeAddIsSuccess']);
+}
+?>
+
 
