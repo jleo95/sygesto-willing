@@ -45,17 +45,17 @@ $(document).ready(function (e) {
 
         if (formValide) {
             $.ajax({
-                url: 'produit/add',
+                url: 'produit/ajout',
                 type: 'post',
                 dataType: 'json',
                 data: $(this).serialize(),
                 success: function (data) {
                     console.log(data);
                     if (data.error == 0) {
-                        // $(window).resize(function () {
-                        //     $table.bootstrapTable('resetView');
-                        // });
-                        // $('#bodyTableProduit').html(data.bodyTableProduit);
+                        $('#bodyTableProduit').html(data.bodyTableProduit);
+                        var produit = data.produit;
+                        $table.bootstrapTable('prepend', produit);
+                        console.log(data);
                         $('#addProuit .modal-header h4').html('Félicitation');
                         $('#addProuit .modal-body').html('<p>Un nouveau produit a été ajouté à ligne #1</p>');
                         $('#addProuit .modal-content').append(data.modalFooter);
@@ -290,6 +290,11 @@ function confirmAdd(status) {
 
 }
 
+
+/**
+ * Trier les produits
+ * @param _idTrie identifiant du trie
+ */
 function trieProduit(_idTrie) {
     $.ajax({
         url: 'produit/trieProduit',
@@ -304,6 +309,10 @@ function trieProduit(_idTrie) {
     })
 }
 
+/**
+ * Afficher toutes les infos d'un produit
+ * @param idProduit identifiant du produit
+ */
 function showAllInfosProduit(idProduit) {
     $.ajax({
         url: 'produit/showAllInfosProduit',
@@ -321,6 +330,10 @@ function showAllInfosProduit(idProduit) {
     })
 }
 
+/**
+ * Impression de la liste des produits
+ * @param _idPrinter
+ */
 function printProduit(_idPrinter) {
     var frm = $("<form>", {
         action: "produit/imprimer",
@@ -335,8 +348,13 @@ function printProduit(_idPrinter) {
     frm.submit();
 }
 
+/**
+ * Chargement du modal pour ajouter le produit
+ */
 function contentModalAdd() {
     $('#addProuit .modal-content .modal-header h4').html('Nouveau produit');
-    $('#addProuit .modal-body').load('produit/loadAdd');
+    // $('#addProuit .modal-body').load('produit/loadAdd');
+    $('#addProuit .modal-body input').val('');
+    $('#addProuit .modal-body select').val('');
     $('#addProuit').modal('show');
 }

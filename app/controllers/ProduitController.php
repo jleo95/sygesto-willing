@@ -45,7 +45,7 @@ class ProduitController extends Controller
     }
 
     #ajout d'un produit
-    public function add()
+    public function ajout()
     {
         $data = [];
         $error = [];
@@ -59,14 +59,6 @@ class ProduitController extends Controller
 
         if (isset($this->input->nbblogAddProduit) AND !empty($this->input->nbblogAddProduit)) {
             $data ['pronbproduitBlog'] = $this->input->nbblogAddProduit;
-        }
-
-       
-
-        if (isset($this->input->peremptionAddProduit) AND !empty($this->input->peremptionAddProduit)) {
-            $data ['prodatePeremption'] = $this->input->peremptionAddProduit;
-        }else {
-            $error ['danger']['peremption'] = true;
         }
 
         if (isset($this->input->familleAddProduit) AND !empty($this->input->familleAddProduit)) {
@@ -265,6 +257,9 @@ class ProduitController extends Controller
         echo json_encode($response);
     }
 
+    /**
+     * Trier les produits
+     */
     public function trieProduit()
     {
         $produits       = $this->Produit->all([], 'proid DESC', FALSE);
@@ -327,6 +322,9 @@ class ProduitController extends Controller
         ]);
     }
 
+    /**
+     * Impression de la liste des produits
+     */
     public function imprimer()
     {
         $pdf       = new \App\Core\PDF();

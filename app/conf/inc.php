@@ -39,9 +39,9 @@ $router->get('index', 'index#index');
 
 #produits
 $router->get('/produit', 'produit#index', 'produit');
-$router->get('/produit/add', 'produit#add', 'produit#add');
+$router->get('/produit/ajout', 'produit#ajout', 'produit#ajout');
 $router->get('/produit/imprimer', 'produit#imprimer');
-$router->post('/produit/add', 'produit#add');
+$router->post('/produit/ajout', 'produit#ajout');
 $router->get('/produit/loadAdd', 'produit#loadAdd');
 $router->post('/produit/loadAdd', 'produit#loadAdd');
 $router->post('/produit/laodDataForDeleteProduit', 'produit#laodDataForDeleteProduit');

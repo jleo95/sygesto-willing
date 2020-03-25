@@ -132,42 +132,34 @@
                             <div class="errorAdd"></div>
                             <form action="" method="post" id="formAddProduit">
                                 <div class="form-group">
-                                    <span class="fa fa-check"></span>
                                     <label for="designAddProduit">Designation</label>
-                                    <input type="text" name="designAddProduit" id="designAddProduit" value="Savon azure" class="form-control" placeholder="nom du produit" required>
+                                    <input type="text" name="designAddProduit" id="designAddProduit" class="form-control" placeholder="nom du produit" required>
                                     <span class="help-block"></span>
                                 </div>
 
-                                <div class="row">
-                                   
-                                    <div class="col-md-8">
-                                        <div class="form-group">
-                                            <label for="fournisseurAddProduit">Fournisseur</label>
-                                            <select name="fournisseurAddProduit" id="fournisseurAddProduit" class="form-control">
-                                                <!--                                                <option value="">Fournisseurs</option>-->
-                                                <?php foreach ($fournisseurs as $f) : ?>
-                                                    <option value="<?php echo $f->fouid; ?>"><?php echo ucfirst($f->founom) . ' ' . ucfirst($f->fouprenom) ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                            <span class="help-block"></span>
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="fournisseurAddProduit">Fournisseur</label>
+                                    <select name="fournisseurAddProduit" id="fournisseurAddProduit" class="form-control">
+                                        <option value="">Fournisseurs</option>
+                                        <?php foreach ($fournisseurs as $f) : ?>
+                                            <option value="<?php echo $f->fouid; ?>"><?php echo ucfirst($f->founom) . ' ' . ucfirst($f->fouprenom) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <span class="help-block"></span>
                                 </div>
 
+
+
                                 <div class="row">
-                                    
-                                   
-                                    <div class="col-md-4">
+
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="nbblogAddProduit">Nbre de produit par blog</label>
-                                            <input type="text" name="nbblogAddProduit" value="50" id="nbblogAddProduit" class="form-control" placeholder="nombre de produit par blog">
+                                            <input type="text" name="nbblogAddProduit" id="nbblogAddProduit" class="form-control" placeholder="nombre de produit par blog">
                                             <span class="help-block"></span>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-10">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="peremptionAddProduit">Date de peremption</label>
                                             <input type="text" name="peremptionAddProduit" id="peremptionAddProduit" class="form-control" placeholder="le date d'expiration d'un produit" required>
@@ -176,12 +168,14 @@
                                     </div>
                                 </div>
 
+
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="familleAddProduit">Famille</label>
                                             <select name="familleAddProduit" id="familleAddProduit" class="form-control">
-                                                <!--                                                <option value="">Famille du produit</option>-->
+                                                <option value="">Famille du produit</option>
                                                 <?php foreach ($familles as $famille) : ?>
                                                     <option value="<?php echo $famille->famid; ?>"><?php echo $famille->famlibelle; ?></option>
                                                 <?php endforeach; ?>
@@ -193,7 +187,7 @@
                                         <div class="form-group">
                                             <label for="uniteAddProduit">Unité de mesure</label>
                                             <select name="uniteAddProduit" id="uniteAddProduit" class="form-control" required>
-                                                <!--                                                <option value="">Unité de mesure</option>-->
+                                                <option value="">Unité de mesure</option>
                                                 <?php foreach ($unites as $unite) : ?>
                                                     <option value="<?php echo $unite->uniid; ?>"><?php echo $unite->unilibelle ?></option>
                                                 <?php endforeach; ?>
@@ -207,7 +201,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="seuilAddProduit">Seuil d'alerte (stock)</label>
-                                            <input type="text" name="seuilAddProduit" id="seuilAddProduit" value="5" class="form-control" placeholder="par exemple 5">
+                                            <input type="text" name="seuilAddProduit" id="seuilAddProduit" class="form-control" placeholder="par exemple 5">
                                             <span class="help-block"></span>
                                         </div>
                                     </div>
