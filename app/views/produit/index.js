@@ -290,12 +290,12 @@ function confirmAdd(status) {
 
 }
 
-function trieProduit(idTrie) {
+function trieProduit(_idTrie) {
     $.ajax({
         url: 'produit/trieProduit',
         type: 'post',
         dataType: 'json',
-        data: {idTrie: idTrie},
+        data: {idTrie: _idTrie},
         success: function (data) {
             $table.bootstrapTable('removeAll');
             $table.bootstrapTable('append', data.bodyTableProduit);

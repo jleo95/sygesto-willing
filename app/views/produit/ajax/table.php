@@ -16,15 +16,7 @@ foreach ($produits as $produit) {
         <td><?php echo $produit->proid ?></td>
         <td><?php echo $produit->prodesignation; ?></td>
         <td><?php echo $produit->famille ?></td>
-        
-        <!--td><?php //if ($stock_function->stock_boutique_by_produit($produit->proid) == 0) { ?>
-            <span style="font-style: italic; font-size: 12px;">rupture</span>
-            <?php
-        //} //else {
-           // echo $stock_function->stock_boutique_by_produit($produit->proid);
-        //}
-        ?>
-        </td-->
+        <td><?php echo $produit->unite ?></td>
         <td></td>
     </tr>
 

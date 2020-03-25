@@ -19,8 +19,8 @@ $title = '<div class="condiv ">' .
        '</div>';
 
 $tab = '<table border="1" cellspacing="0" cellpadding="3">' .
-            '<tr style="background-color:#FFFF00;color:#0000FF;">' .
-                '<th>Produit</th>' .
+            '<tr style="background-color:#ddd;">' .
+                '<th>Famille</th>' .
                 '<th>Designation</th>' .
                 '<th>Quantite</th>' .
                 '<th>Unite</th>' .
@@ -29,30 +29,32 @@ $tab = '<table border="1" cellspacing="0" cellpadding="3">' .
 foreach ($groupByfamille as $k => $g) {
     $lenGroupe = count($g);
     $j = 0;
+    $class = '';
+
+    if ($j % 2 === 0)
+        $color = '#ddd';
 
     if ($lenGroupe == 1) {
-        $tab .= '<tr>' .
+        $tab .= '<tr class="color- ' . $j . '" style="background-color: ' . $class . '">' .
                     '<td>' . $k . '</td>' .
                     '<td>' . $g[0]->produit . '</td>' .
                     '<td>' . $g[0]->quantite . '</td>' .
                     '<td>' . $g[0]->unite . '</td>' .
             '</tr>';
     }else {
-        $tab .= '<tr>' .
-            '<td rowspan="' . $lenGroupe . '">' . $k . '</td>';
+//        $tab .= '<tr>'
+//            '<td rowspan="' . $lenGroupe . '">' . $k . '</td>';
         foreach ($g as $d) {
-            $tab .= '<td>' . $d->produit . '</td>' .
-                    '<td>' . $d->quantite . '</td>' .
-                    '<td>' . $d->unite . '</td>';
-
-            if ($j < $lenGroupe) {
-                $tab .= '</tr><tr>';
-            }else{
-                $tab .= '</tr>';
-            }
-            $j = $j +1;
+            $tab .= '<tr class="color- ' . $j . '" style="background-color: ' . $class . '">' .
+                '<td>' . $k . '</td>' .
+                '<td>' . $d->produit . '</td>' .
+                '<td>' . $d->quantite . '</td>' .
+                '<td>' . $d->unite . '</td>' .
+                '</tr>';
         }
     }
+
+    $j ++;
 
 }
 

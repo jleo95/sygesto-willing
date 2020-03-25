@@ -23,32 +23,7 @@ class ProduitModel extends Model {
         $this->id = 'proid';
     }
 
-    protected function findAllQuery(?array $fields = [], ?string $orderBy = null)
-    {
-        $fields = explode(',', 'proid, prodesignation, proreference,' .
-            'pronbproduitBlog, proseuilalert, unilibelle unite, uniabv, famlibelle famille, famembalageBlog embalage, ' .
-            'founom, fouprenom');
-        return parent::findAllQuery($fields, $orderBy)
-                ->join('familles', 'profamille = famid')
-                ->join('fournisseurs', 'fouid = profournisseur')
-                ->join('unitemesure', 'prounitemessure = uniid');
-    }
 
-
-    protected function findByQuery(?string $nameFields = null, ?array $fields = null, ?string $orderBy = null)
-    {
-        $fields = explode(',',
-            'produits.*, unilibelle unite, uniabv, famlibelle famille, famembalageBlog embalage, ' .
-                    'founom, fouprenom');
-        $query = parent::findByQuery($nameFields, $fields, $orderBy)
-                ->join('familles', 'profamille = famid')
-                ->join('fournisseurs', 'fouid = profournisseur')
-                ->join('unitemesure', 'prounitemessure = uniid');
-        if (!empty($orderBy)) {
-            $query = $query->order($orderBy);
-        }
-        return $query;
-    }
 
     /**
      * @param $temps int le temps est fixé en terme de mois par exemple 3, ou 4, 8 ... (mois)
@@ -92,5 +67,30 @@ class ProduitModel extends Model {
         return $this->execute($query, $data);
     }
 
+    protected function findAllQuery(?array $fields = [], ?string $orderBy = null)
+    {
+        $fields = explode(',', 'proid, prodesignation, proreference,' .
+            'pronbproduitBlog, proseuilalert, unilibelle unite, uniabv, uniid unite_id, famlibelle famille, famid famille_id, famembalageBlog embalage, ' .
+            'founom, fouprenom');
+        return parent::findAllQuery($fields, $orderBy)
+            ->join('familles', 'profamille = famid')
+            ->join('fournisseurs', 'fouid = profournisseur')
+            ->join('unitemesure', 'prounitemessure = uniid');
+    }
 
+
+    protected function findByQuery(?string $nameFields = null, ?array $fields = null, ?string $orderBy = null)
+    {
+        $fields = explode(',',
+            'produits.*, unilibelle unite, uniabv, famlibelle famille, famembalageBlog embalage, ' .
+            'founom, fouprenom');
+        $query = parent::findByQuery($nameFields, $fields, $orderBy)
+            ->join('familles', 'profamille = famid')
+            ->join('fournisseurs', 'fouid = profournisseur')
+            ->join('unitemesure', 'prounitemessure = uniid');
+        if (!empty($orderBy)) {
+            $query = $query->order($orderBy);
+        }
+        return $query;
+    }
 }

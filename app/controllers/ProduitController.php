@@ -271,33 +271,25 @@ class ProduitController extends Controller
         $tmp            = [];
         $etat           = '';
         $this->produits = [];
+        $idTrie = intval($this->input->idTrie);
 
-        if ($this->input->idTrie == 1) {
+        if ($idTrie === 1) {
             foreach ($produits as $produit) {
-                if ($this->stock_boutique_by_produit($produit->proid) <= $produit->proseuilalert AND $this->stock_boutique_by_produit($produit->proid) != 0) {
-                    $tmp [] = $produit;
+                foreach ($produits as $p) {
+                    if ($produit->famille_id === $p->famille_id)
+                        $tmp[] = $p;
                 }
             }
-            $etat = 'en alerte';
-        }elseif ($this->input->idTrie == 2) {
+        }elseif ($idTrie === 2) {
             foreach ($produits as $produit) {
-                if ($this->stock_boutique_by_produit($produit->proid) == 0) {
-                    $tmp [] = $produit;
+                foreach ($produits as $p) {
+                    if ($produit->unite_id === $p->unite_id)
+                        $tmp[] = $p;
                 }
             }
             $etat = 'en rupture';
-        }elseif ($this->input->idTrie == 3) {
-            foreach ($produits as $produit) {
-                if (
-                    $this->stock_boutique_by_produit($produit->proid) > $produit->proseuilalert AND
-                    $this->stock_boutique_by_produit($produit->proid) > 0
-                ) {
-                    $tmp [] = $produit;
-                }
-            }
-            $etat = 'en stock';
-        }else {
-            $tmp = $produits;
+        }else{
+           $tmp = $this->Produit->all([], 'proid DESC');
         }
 
         $this->produits = $tmp;
@@ -344,7 +336,7 @@ class ProduitController extends Controller
         $this->layout->assign('stock_function', $this);
         $this->layout->assign('pdf', $pdf);
         $this->layout->assign('produits', $produits);
-        $this->layout->render('produit' . DS . 'impression' . DS . 'stock', TRUE);
+        $this->layout->render('produit' . DS . 'impression' . DS . 'produit', TRUE);
     }
 
     #chargement des element de la table qui contient la liste des produit
@@ -396,9 +388,8 @@ class ProduitController extends Controller
             $p = [
                     'id'              => $produit->proid,
                     'name'            => $produit->prodesignation,
-                    'family'          => $produit->famille
-                    
-                   
+                    'family'          => $produit->famille,
+                    'unite'          => $produit->unite
                  ];
             
             $tmps [] = $p;

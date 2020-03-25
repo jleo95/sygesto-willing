@@ -19,6 +19,8 @@ class LivraisonModel extends Model
     public function all(?array $fields = null, ?string $orderBy = null)
     {
         $livraisons = parent::all($fields, $orderBy);
+//        var_dump($livraisons);
+//        die();
         $tmp = [];
         foreach ($livraisons as $livraison) {
             $query = $this->makeQuery()
@@ -26,8 +28,11 @@ class LivraisonModel extends Model
                 ->from('offre_detail d')
                 ->where('produit = ? AND offre = ?');
             $details = $this->execute($query, [$livraison->produit_id, $livraison->offre], $one = true);
-            $livraison->quantite_restante = $details->quantite - $livraison->quantite;
-            $tmp[] = $livraison;
+            if ($details) {
+                $livraison->quantite_restante = $details->quantite - $livraison->quantite;
+                $tmp[] = $livraison;
+            }
+
         }
         return $tmp;
     }

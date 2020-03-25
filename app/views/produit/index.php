@@ -17,11 +17,10 @@
                     <div class="form-group">
                         <label for="triProduit">Trier par: </label>
                         <select name="triProduit" id="triProduit" class="form-control" onchange="trieProduit(this.value)">
-                            <option value="">Trier</option>
-                            <option value="3">En stock</option>
-                            <option value="1">En alerte de stock</option>
-                            <option value="2">En rupture</option>
-                            <option value="4">Tous</option>
+                            <option value="">Trier par :</option>
+                            <option value="1">Famille</option>
+                            <option value="2">Unite mésure</option>
+                            <option value="3">Tous</option>
                         </select>
                     </div>
 
@@ -55,9 +54,7 @@
 
                             <th data-field="family" data-sortable="true">Famille</th>
 
-                      
-
-                           
+                            <th data-field="unite" data-sortable="true">Unité M.</th>
 
                             <th data-field="actions" data-formatter="operateFormatter" data-events="operateEvents">Actions</th>
                             </thead>

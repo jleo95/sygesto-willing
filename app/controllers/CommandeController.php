@@ -196,6 +196,7 @@ class CommandeController extends Controller
         $details = $this->Offredetail->show_offre_detail_by_offre($id);
         $groupByfamille = [];
 
+        #regroupe les produits par famille
         foreach ($details as $detail) {
             foreach ($details as $d) {
                 if ($detail->famille_id == $d->famille_id) {
@@ -204,45 +205,9 @@ class CommandeController extends Controller
             }
         }
 
-
-        $table = '<table class="table table-striped table-responsive table-bordered" border="1" cellspacing="0" cellpadding="3">' .
-                '<tr>' .
-                    '<th>Produit</th>' .
-                    '<th>Designation</th>' .
-                    '<th>Quantité</th>' .
-                    '<th>Unité</th>' .
-                '</tr>';
-
-        foreach ($groupByfamille as $k => $item) {
-            $j = 1;
-            $itemLen = count($item);
-            $table .= '<tr>';
-            if ($itemLen > 1)
-                $table .= '<td rowspan="' . $itemLen . '">' . $k . '</td>';
-            else
-                $table .= '<td>' . $k . '</td>';
-            foreach ($item as $d) {
-                $table .= '<td>' . $d->produit . '</td>' .
-                    '<td>' . $d->quantite . '</td>' .
-                    '<td>' . $d->unite . '</td>';
-                if (count($item) > 1){
-                    if ($j < count($item)) {
-                        $table .= '</tr><tr>';
-                    }else{
-                        $table .= '</tr>';
-                    }
-                }
-                $j ++;
-            }
-            $table .= '</tr>';
-        }
-
-        $table .= '</table>';
-
         $commande = $this->Offre->get_by($nameFields = 'off.offid', $value = intval($id));
         $this->layout->assign('commande', $commande);
         $this->layout->assign('groupByfamille', $groupByfamille);
-        $this->layout->assign('table', $table);
         $this->layout->assign('pdf', $pdf);
         $this->layout->render('commande' . DS . 'impression' . DS . 'commande', TRUE);
     }

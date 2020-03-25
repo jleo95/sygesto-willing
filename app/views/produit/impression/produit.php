@@ -4,10 +4,11 @@ $pdf->AddPage();
 
 $table = '<table border="1" cellspacing="0" cellpadding="3">' .
                 '<tr style="background-color: #efefef;">' .
+
                     '<th width="7%">Ref.</th>' .
                     '<th width="44%">Designation</th>' .
                     '<th width="27%">Famille</th>' .
-                    '<th width="22%">D. Peremp.</th>' .
+                    '<th width="22%">Unité m.</th>' .
                    
                 '</tr>';
 
@@ -16,7 +17,7 @@ foreach ($produits as $produit) {
                 '<td align="left">' . $produit->proid . '</td>' .
                 '<td align="left">' . ucfirst($produit->prodesignation) . '</td>' .
                 '<td align="left">' . $produit->famille . '</td>' .
-                '<td align="left">' . date('d/m/Y', strtotime($produit->prodatePeremption)) . '</td>' .
+                '<td align="left">' . $produit->unite . '</td>' .
                 
               '</tr>';
 }
